@@ -37,51 +37,11 @@ let getUserInfo = (user_id) => {
     return query(_sql, [user_id]);
 }
 
-// 通过要查看的用户id 查询是否是本机用户的好友  如果是 返回user_id 和 remark 备注
-let isFriend = (user_id, other_user_id, is_show) => {
-    const _sql =
-        'SELECT  * FROM user_user_relation  AS u WHERE  u.user_id = ? AND u.other_user_id = ? AND u.is_show = ? '
-    return query(_sql, [user_id, other_user_id, is_show]);
-}
-// 加为好友 单方面
-let addAsFriend = (user_id, other_user_id, time, is_show) => {
-    const _sql =
-        'INSERT INTO user_user_relation(user_id,other_user_id,time,is_show) VALUES (?,?,?,?)'
-    return query(_sql, [user_id, other_user_id, time, is_show]);
-}
-
-// 删除好友
-let delFriend = (is_show, user_id, other_user_id) => {
-    const _sql =
-        'UPDATE user_user_relation SET is_show = ? WHERE user_id = ? AND other_user_id = ?'
-    return query(_sql, [is_show, user_id, other_user_id]);
-}
-
-//修改备注
-let editorRemark = (remark, user_id, other_user_id, is_show) => {
-    const _sql =
-        'UPDATE  user_user_relation  SET remark = ?  WHERE  user_id = ? AND other_user_id = ? AND is_show = ?'
-    return query(_sql, [remark, user_id, other_user_id, is_show]);
-}
-
-//修改我的信息
-let editorInfo = function(data) {
-    let _sql = ' UPDATE  user_info SET github = ?,website = ?,sex = ?,place = ? WHERE id = ? ; '
-    return query(_sql, data)
-}
-
-
-
 module.exports = {
     insertUser,
     activateUser,
     findDataByName,
     findDataByActivateCode,
     findUIByName,
-    getUserInfo,
-    isFriend,
-    addAsFriend,
-    editorRemark,
-    delFriend,
-    editorInfo
+    getUserInfo
 }

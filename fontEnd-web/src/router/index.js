@@ -5,6 +5,11 @@ import activate from '@/views/activate'
 import register from '@/views/register'
 import layout from '@/views/layout'
 import home from '@/views/home'
+import store from '@/views/store'
+import team from '@/views/team'
+import order from '@/views/order'
+import car from '@/views/car'
+import transport from '@/views/transport'
 
 Vue.use(Router)
 
@@ -55,6 +60,68 @@ const router = new Router({
           role: 3
         },
         component: home
+      }]
+    },
+    {
+      path: '/admin',
+      name: 'layout',
+      isNest: true,
+      meta: {
+        zhName: '管理员管理',
+        key: '2',
+        role: 3
+      },
+      component: layout,
+      children: [{
+        path: '/order',
+        name: 'order',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '订单管理',
+          key: '2-1',
+          role: 3
+        },
+        component: order
+      },{
+        path: '/transport',
+        name: 'transport',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '运输任务管理',
+          key: '2-2',
+          role: 3
+        },
+        component: transport
+      },{
+        path: '/store',
+        name: 'store',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '仓库管理',
+          key: '2-3',
+          role: 3
+        },
+        component: store
+      },{
+        path: '/team',
+        name: 'team',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '人员管理',
+          key: '2-4',
+          role: 3
+        },
+        component: team
+      },{
+        path: '/car',
+        name: 'car',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '车辆管理',
+          key: '2-5',
+          role: 3
+        },
+        component: car
       }]
     }
   ]
