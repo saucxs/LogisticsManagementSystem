@@ -33,12 +33,15 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import footerBar from "../components/footer";
+  import { checkEmail } from "../utils/common"
   export default {
     name: 'register',
     data() {
       return {
-        code: this.$route.params.code,
-        message: ''
+        name: '',
+        password: '',
+        email: '',
+        disabledFlag: false
       };
     },
     components: {
@@ -49,29 +52,49 @@
         'systemName'
       ])
     },
-    created() {
-      this.activateEmailFunction();
+    mounted () {
+      document.addEventListener('keyup', this.handleEnter);
     },
     methods: {
-      ...mapActions(["activateEmail"]),
-      goBackLogin () {
-        this.$router.push('/login')
-      },
-      activateEmailFunction(){
-        let data = {
-          code: this.code
+      ...mapActions(["register"]),
+      actualRegister() {
+        let params = {
+          name: this.name,
+          password: this.password,
+          email: this.email
         }
-        this.activateEmail(data).then(res => {
-          if (res) {
-            this.message = res.message;
-          }
-        }).catch(err => {
-          this.$message({
-            message: '服务器出错啦',
-            type: "error"
-          });
-        })
-      }
+        if (this.name !== "" && this.password !== "" && this.email !== "" && checkEmail(this.email)) {
+          this.register(params).then(res => {
+            if (res) {
+              if (res.success) {
+                //弹窗
+                this.$alert(res.message, '提示', {
+                  confirmButtonText: '确定',
+                  center: true,
+                  callback: () => {
+                    this.$router.push("/login");
+                  }
+                });
+              } else {
+                this.$message.warning(res.message|| '服务开小差');
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            this.$message.error('服务器出错啦');
+          })
+        } else {
+          if (this.name === "") {this.$message.warning("请输入用户名") }
+          if (this.password === "") { this.$message.warning("请输入密码") }
+          if (this.email === "") { this.$message.warning("请输入邮箱") }
+          if (!checkEmail(this.email)) { this.$message.warning("请输入正确的邮箱") }
+        }
+      },
+      startRegister() {
+        this.disabledFlag = true;
+        this.actualRegister()
+        this.disabledFlag = false;
+      },
     }
   }
 </script>

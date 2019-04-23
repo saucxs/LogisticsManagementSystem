@@ -12,7 +12,7 @@
           </router-link>
           <div class="form_content" >
             <span class="normal-word">用户名：</span>
-            <input @keyup.enter.native="submit" minlength="6" maxlength="30" type="text" name="username" placeholder="用户名/手机/邮箱" v-model="name" />
+            <input @keyup.enter.native="submit" minlength="6" maxlength="30" type="text" name="name" placeholder="用户名/手机/邮箱" v-model="name" />
           </div>
           <div class="form_content" >
             <span class="normal-word">密码：</span>
@@ -71,7 +71,7 @@
               localStorage.setItem("LogisticsManagementSystemUserToken", res.token);
               localStorage.setItem("LogisticsManagementSystemUserInfo", JSON.stringify(res.userInfo));
               this.$store.commit('USER_INFO', res.userInfo)
-              this.$message.success(res.errmsg|| '登陆成功');
+              this.$message.success(res.message|| '登陆成功');
               this.$router.push({ path: '/home' });
             }else{
               this.$message.warning(res.message|| '服务开小差');

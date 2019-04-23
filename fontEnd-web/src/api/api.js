@@ -3,6 +3,7 @@
 import Vue from "vue";
 import axios from "axios";
 import router from '../router'
+import { MessageBox } from 'element-ui'
 
 // 继承vue的原型方法
 Vue.prototype.axios = axios;
@@ -14,7 +15,7 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(config => {
-  const token = localStorage.getItem('HappyChatUserToken');
+  const token = localStorage.getItem('LogisticsManagementSystemUserToken');
   if (token) {
     /*Bearer是JWT的认证头部信息*/
     config.headers.common['Authorization'] = 'Bearer ' + token;
@@ -38,11 +39,9 @@ service.interceptors.response.use(
     if(error.response) {
       switch (error.response.status){
         case 401:
-          /*返回401，清空token信息，关闭socketio，并跳转到登陆页*/
-          let userInfo = JSON.parse(localStorage.getItem("HappyChatUserInfo"));
-          socketWeb.emit('logout', userInfo.user_id)
-          localStorage.removeItem("HappyChatUserToken");
-          localStorage.removeItem("HappyChatUserInfo");
+          /* 返回401，清空token信息，并跳转到登陆页 */
+          localStorage.removeItem("LogisticsManagementSystemUserToken");
+          localStorage.removeItem("LogisticsManagementSystemUserInfo");
           setTimeout(function() {
             router.push({
               path: "/login",
@@ -50,7 +49,7 @@ service.interceptors.response.use(
             });
           }, 500);
         case 504:
-          /*后端服务器关闭的时候*/
+          /* 后端服务器关闭的时候 */
           MessageBox.confirm('服务器暂时开了小差，请稍后重试','提示',{
             confirmButtonText:'重新连接',
             type:'warning',
@@ -65,10 +64,6 @@ service.interceptors.response.use(
       }
     } else if (!error.response) {
       /*断网*/
-      // console.log('我断网了');
-      // console.log(Loading, '----------------')
-      // Loading.installed = true;
-      // Loading.$loading.show();
       MessageBox.confirm('您现在处于无网的状态，请确定网络正常后重试','提示',{
         confirmButtonText:'重新连接',
         type:'warning',
@@ -98,6 +93,15 @@ export default {
   activateEmail: (params) => {
     let data = { params: params };
     return service.get("/activate", data)
+  },
+  /* 获取订单列表 - get */
+  getOrderList: (params) => {
+    let data = { params: params };
+    return service.get("/orderList", data)
+  },
+  /* 新增订单 post */
+  addOrder: (params) => {
+    return service.post("/addOrder", params)
   }
   /**
    * API demo

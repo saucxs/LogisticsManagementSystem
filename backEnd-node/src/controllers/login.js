@@ -16,8 +16,9 @@ module.exports = async (ctx, next) => {
     }
     const alreadyRow = await userModel.findDataByName(name);
     const res = JSON.parse(JSON.stringify(alreadyRow));
+    console.log(res, '-=-=-=-=-=-=-=-=-')
     if (res.length > 0) {
-        if (res[0]['activate']) {
+        if (res[0]['activate'] === 1) {
             /*验证成功，服务端会签发一个token，token返回给客户端*/
             let salt = dbConfig.salt
             if (md5(salt + password + salt) === res[0]["password"]) {

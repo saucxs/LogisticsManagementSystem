@@ -15,9 +15,23 @@ export const register = ({ commit }, params) => {
   })
 }
 
-//activateEmail
+// activateEmail
 export const activateEmail = ({ commit }, params) => {
   return Api.activateEmail(params).then(response => {
+    return response;
+  })
+}
+
+// orderList
+export const getOrderList = ({ commit }, params) => {
+  return Api.getOrderList(params).then(response => {
+    return response;
+  })
+}
+
+// add Order
+export const addOrder = ({ commit }, params) => {
+  return Api.addOrder(params).then(response => {
     return response;
   })
 }

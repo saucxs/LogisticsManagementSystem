@@ -166,4 +166,17 @@
   *::placeholder {
     font-size: 12px;
   }
+
+  /*分页插件*/
+  .pagination-box{
+    text-align: right;
+    margin: 10px 0px;
+  }
+
+  /*提醒小字*/
+  .tip-p{
+    font-size: 12px;
+    color: #cccccc;
+  }
+
 </style>
