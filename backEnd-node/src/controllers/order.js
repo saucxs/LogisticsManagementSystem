@@ -9,8 +9,8 @@ const {randomString,toNomalTime} = require('../utils/common');
 
 let getOrderList = async (ctx, next) => {
     console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
-    let page = ctx.query.currentPage || 1,
-        pageNum = ctx.query.pageSize || 10,
+    let page =  1,
+        pageNum = 10,
 		role = ctx.query.operator_role,
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum < 0 ? 0 : (page - 1) * pageNum;
@@ -29,6 +29,7 @@ let getOrderList = async (ctx, next) => {
 		}
 	};
 };
+
 
 
 /**
