@@ -36,7 +36,7 @@
     background-color: #eee !important;
     margin: 0;
     padding: 0;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
   }
   #app {
     height: 100%;
@@ -146,22 +146,22 @@
       top: 14px;
     }
   }
-  /*滚动条*/
-  *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
+  /*!*滚动条*!*/
+  /**::-webkit-scrollbar {*/
+    /*width: 5px;*/
+    /*height: 5px;*/
+  /*}*/
 
-  *::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #f5f5f5;
-  }
+  /**::-webkit-scrollbar-track {*/
+    /*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);*/
+    /*background-color: #f5f5f5;*/
+  /*}*/
 
-  *::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #777;
-  }
+  /**::-webkit-scrollbar-thumb {*/
+    /*border-radius: 10px;*/
+    /*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);*/
+    /*background-color: #777;*/
+  /*}*/
   /*输入框*/
   *::placeholder {
     font-size: 12px;
@@ -177,6 +177,11 @@
   .tip-p{
     font-size: 12px;
     color: #cccccc;
+  }
+
+  .loginHeader h1{
+    margin: 0 auto;
+    text-align: center;
   }
 
 </style>

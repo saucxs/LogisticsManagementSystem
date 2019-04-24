@@ -7,10 +7,10 @@ let insertUser= function (value) {
 }
 
 /*注册用户-激活*/
-let activateUser= function (activate, activateDate, email) {
-    console.log(activate, email, 'activateCode--------------------')
-    let sql = "update user_info SET activate = ?, activateDate = ? WHERE email = ? "
-    return query(sql, [activate, activateDate, email])
+let activateUser= function (activate, activateDate, code) {
+    console.log(activate, activateDate, code, 'activateCode--------------------')
+    let sql = "update user_info SET activate = ?, activateDate = ? WHERE activateCode = ? "
+    return query(sql, [activate, activateDate, code])
 }
 
 /*通过activateCode查找用户信息 user_info*/

@@ -102,6 +102,10 @@ export default {
   /* 新增订单 post */
   addOrder: (params) => {
     return service.post("/addOrder", params)
+  },
+  /* 删除订单 post */
+  deleteOrder: (params) => {
+    return service.post("/deleteOrder", params)
   }
   /**
    * API demo

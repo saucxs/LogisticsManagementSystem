@@ -1,7 +1,7 @@
 /*邮件模板*/
 let mailTemplate = function (receiveEmailName, emailContent, name, homepage, description, fontcolor, bgcolor) {
     var name = name || '物流管理系统';
-    var homepage = homepage || 'http://chat.chengxinsong.cn';
+    var homepage = homepage || 'http://wuliu.mwcxs.top';
     var description = description || '物流管理系统';
     var fontcolor = fontcolor || '#fff';
     var bgcolor = bgcolor || '#363941';
@@ -9,9 +9,9 @@ let mailTemplate = function (receiveEmailName, emailContent, name, homepage, des
         '\t\t\t<table cellpadding="0" cellspacing="0" style="margin: auto;background-color:white;font-family:PingFangSC,&quot;Microsoft Yahei&quot;,&quot;Heiti SC&quot;,sans-serif ;border-radius:8px;overflow:hidden;">\n' +
         '\t\t\t\t<tbody>\n' +
         '\t\t\t\t\t<tr style="width:700px;height:100px;background: #363941;">\n' +
-        '\t\t\t\t\t\t<th style="width:700px;">\n' +
-        '\t\t\t\t\t\t\t<img style="width: 70px;" src="http://chat.chengxinsong.cn/icon/happyChat.png" />\n' +
-        '\t\t\t\t\t\t\t<p style="color: #9fa1a1;margin: -10px auto 20px;font-size: 16px;">'+ name +'</span>\n' +
+        '\t\t\t\t\t\t<th style="width:700px;padding: 10px 0;">\n' +
+        '\t\t\t\t\t\t\t<img style="width: 70px;" src="http://chat.chengxinsong.cn/icon/wuliu.png" />\n' +
+        '\t\t\t\t\t\t\t<p style="color: #9fa1a1;margin: 10px auto 10px;font-size: 16px;">'+ name +'</span>\n' +
         '\t\t\t\t\t\t</th>\n' +
         '\t\t\t\t\t</tr>\n' +
         '\t\t\t\t\t<tr style="width:700px;height:60px;">\n' +

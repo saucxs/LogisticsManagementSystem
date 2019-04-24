@@ -20,7 +20,7 @@
           </div>
           <div class="form_content" >
             <span class="normal-word">邮箱：</span>
-            <input @keyup.enter.native="startRegister" minlength="6" maxlength="16" type="text" placeholder="邮箱" v-model="email" />
+            <input @keyup.enter.native="startRegister" minlength="6" maxlength="50" type="text" placeholder="邮箱" v-model="email" />
           </div>
           <button :disabled="disabledFlag" class="loginBtn" @click="startRegister">注册</button>
         </div>
@@ -134,11 +134,12 @@
     height: 490px;
   }
   .content_box {
-    width: 805px;
-    height: 480px;
-    padding: 50px 0px;
+    height: 750px;
+    padding: 150px 0;
     margin: 0 auto;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
   }
 
   .content_box_img_bg{
@@ -147,7 +148,7 @@
   .content_box_form {
     box-sizing: border-box;
     display: inline-block;
-    width: 320px;
+    width: 420px;
     height: 380px;
     vertical-align: top;
     text-align: center;
@@ -162,7 +163,7 @@
   h1 {
     list-style-type: none;
     font-family: PingFangSC-Regular;
-    font-size: 20px;
+    font-size: 27px;
     color: #000000;
     letter-spacing: 10px;
   }

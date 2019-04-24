@@ -9,18 +9,19 @@ const {randomString,toNomalTime} = require('../utils/common');
 
 let getOrderList = async (ctx, next) => {
     console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
-    let page =  1,
-        pageNum = 10,
+    let page =  Number(ctx.query.currentPage || 1),
+        pageNum = Number(ctx.query.pageSize || 10),
 		role = ctx.query.operator_role,
 		content = ctx.query.searchContent;
-    let pageIndex = (page - 1) * pageNum < 0 ? 0 : (page - 1) * pageNum;
+    let pageIndex = (page - 1) * pageNum;
     console.log(pageIndex,pageNum, '333333333333333333333333')
 	const RowDataPacket = await orderModel.getOrderListPagination(role,content,pageIndex,pageNum),
 		orderList = JSON.parse(JSON.stringify(RowDataPacket));
+    console.log('12')
 	// console.log(orderList, '444444444444444444444444444')
 	const RowDataPacketTotal = await orderModel.getOrderListTotal(role,content),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
-    console.log(total, '555555555555555555555')
+    // console.log(total, '555555555555555555555')
 	ctx.body = {
 		success: true,
 		data: {
@@ -55,7 +56,8 @@ let addOrder = async (ctx, next) => {
             params.order_receiver_address,
             params.operator_name,
             params.operator_role,
-            params.remark
+            params.remark,
+            1
         ]);
         ctx.body = {
             success: true,
@@ -73,7 +75,7 @@ let addOrder = async (ctx, next) => {
             params.operator_role,
             params.remark,
             params.order_id,
-            params.id
+            params.id,
         ).then(res => {
             console.log(res, '09090909090909090')
             if (res) {
@@ -87,9 +89,25 @@ let addOrder = async (ctx, next) => {
 	}
 };
 
+/*删除订单*/
+let deleteOrder = async (ctx, next) => {
+    let params = ctx.request.body;
+    console.log(params.order_id, '2222222222222222222222222')
+    let order_id = params.order_id;
+    await orderModel.deleteOrder([0, order_id]).then(res => {
+        if(res){
+            ctx.body = {
+                success: true,
+                message: '删除订单成功'
+            };
+            console.log("删除订单成功");
+        }
+    })
+}
 
 
 module.exports = {
 	getOrderList,
-    addOrder
+    addOrder,
+    deleteOrder
 };

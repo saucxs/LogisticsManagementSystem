@@ -21,7 +21,7 @@ let unActivate = async (ctx, next) => {
                 message: "用户名已经存在"
             }
         }else{
-            let code =  md5(salt + randomString(64) +salt);
+            let code =  md5(salt + randomString(36) +salt);
             userModel.insertUser([
                 user.name,
                 md5(salt + user.password + salt),
@@ -34,40 +34,39 @@ let unActivate = async (ctx, next) => {
                 success: true,
                 message: "注册成功，请前往注册邮箱进行激活"
             };
-            let activateUrl = "http://chat.chengxinsong.cn/#/activate/" + code;
+            let activateUrl = "http://wuliu.mwcxs.top/#/activate/" + code;
             /*sendeamil*/
-            // let content =  '<p style="width: 700px">用户激活邮件，点击下方的连接进行激活:</p>' +
-            //     '<a target="_blank" style="width: 700px;color: #5579ee;font-size: 20px" href="'+ activateUrl +'">'+ activateUrl +'</a>';
-            // let newHtml = mailTemplate(user.name, content)
+            let content =  '<p style="width: 700px">用户激活邮件，点击下方的连接进行激活:</p>' +
+                '<a target="_blank" style="width: 700px;color: #5579ee;font-size: 20px" href="'+ activateUrl +'">'+ activateUrl +'</a>';
+            let newHtml = mailTemplate(user.name, content)
             /*创建email的连接*/
-            // let smtpTransport = nodemailer.createTransport({
-            //     host: mailer.host,
-            //     secureConnection: true,
-            //     port: mailer.port,
-            //     requiresAuth: true,
-            //     domains: mailer.domains,
-            //     auth: {
-            //         user: mailer.account,
-            //         pass: mailer.pass
-            //     }
-            // });
+            let smtpTransport = nodemailer.createTransport({
+                host: mailer.host,
+                secureConnection: true,
+                port: mailer.port,
+                requiresAuth: true,
+                domains: mailer.domains,
+                auth: {
+                    user: mailer.account,
+                    pass: mailer.pass
+                }
+            });
             /*邮件内容配置项*/
-            // let specialOption = {
-            //     from: mailer.from,
-            //     to: user.email,
-            //     subject: user.name+'用户激活邮件',
-            //     html: newHtml
-            // };
-            // smtpTransport.sendMail(specialOption, function (err, res) {
-            //     if(err){
-            //         console.log(err);
-            //     }else{
-            //         console.log(res,'注册激活邮件发送邮件日志-----------------------------------------------');
-            //     }
-            //     //如果不在发送可以直接关闭，如果还需要发送其他邮件，那么就不要关闭连接池，直接发送
-            //     smtpTransport.close();
-            // })
-
+            let specialOption = {
+                from: mailer.from,
+                to: user.email,
+                subject: user.name+'用户激活邮件',
+                html: newHtml
+            };
+            smtpTransport.sendMail(specialOption, function (err, res) {
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log(res,'注册激活邮件发送邮件日志-----------------------------------------------');
+                }
+                //如果不在发送可以直接关闭，如果还需要发送其他邮件，那么就不要关闭连接池，直接发送
+                smtpTransport.close();
+            })
         }
     })
 }
@@ -76,22 +75,23 @@ let activate = async (ctx, next) => {
     let code = ctx.query.code;
     await userModel.findDataByActivateCode(code).then(res => {
         if(res.length) {
-            let user = res[0]
-            if (user.activate) {
+            let user = res[0];
+            if (user.activate === 1) {
+                console.log(user, '111111111111111111111111111111111111')
                 ctx.body = {
                     success: false,
                     message: "该邮箱"+ user.email +"\r在"+ user.activateDate +"已经激活"
                 }
             } else {
+                console.log(user, '2222222222222222222222222222222')
                 let activateDate = toNomalTime(new Date().getTime())
-                userModel.activateUser(true, activateDate, user.email).then(res => {
-                    if (res) {
-                        ctx.body = {
-                            success: true,
-                            message: "恭喜你，"+ user.email +"激活成功"
-                        }
+                let res = userModel.activateUser(true, activateDate, code);
+                if (res) {
+                    ctx.body = {
+                        success: true,
+                        message: "恭喜你，"+ user.email +"激活成功"
                     }
-                })
+                }
             }
         } else {
             ctx.body = {

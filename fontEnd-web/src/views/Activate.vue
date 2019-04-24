@@ -82,12 +82,13 @@ export default {
     background: #00000e url("../assets/surfing.jpg") no-repeat center 0;
   }
   .content_box {
-    width: 805px;
-    height: 480px;
+    height: 530px;
     padding: 144px 0px;
     margin: 0 auto;
     box-sizing: border-box;
     text-align: center;
+    display: flex;
+    justify-content: center;
   }
   .content_box_form {
     box-sizing: border-box;
@@ -105,7 +106,7 @@ export default {
   h1 {
     list-style-type: none;
     font-family: PingFangSC-Regular;
-    font-size: 20px;
+    font-size: 27px;
     color: #000000;
     letter-spacing: 10px;
   }

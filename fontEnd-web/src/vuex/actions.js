@@ -35,3 +35,10 @@ export const addOrder = ({ commit }, params) => {
     return response;
   })
 }
+
+// delete Order
+export const deleteOrder = ({ commit }, params) => {
+  return Api.deleteOrder(params).then(response => {
+    return response;
+  })
+}

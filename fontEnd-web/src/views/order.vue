@@ -59,7 +59,7 @@
         width="150">
         <template slot-scope="scope">
           <el-button @click="operatorOrder('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button @click="deleteOrder(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -152,7 +152,8 @@
     methods: {
       ...mapActions([
         "getOrderList",
-        "addOrder"
+        "addOrder",
+        "deleteOrder"
       ]),
       handleCurrentChange(currentPage) {
         this.orderList(currentPage,10)
@@ -194,8 +195,20 @@
           this.formOrder = item;
         }
       },
-      deleteOrder(){
-
+      deleteOrderItem(item){
+          console.log(item, 'item')
+          let param = {
+            order_id: item.order_id
+          }
+          this.deleteOrder(param).then(res => {
+            console.log(res, 'res')
+            if(res.success){
+              this.$message.success(res.message);
+              this.orderList(this.currentPage,10);
+            }else{
+              this.$message.warning(res.message|| '服务开小差');
+            }
+          })
       },
       successConfirm(type){
         if(!this.formOrder.order_name || !this.formOrder.order_goods || !this.formOrder.order_receiver_name || !this.formOrder.order_receiver_phone || !this.formOrder.order_receiver_address || !this.formOrder.remark){

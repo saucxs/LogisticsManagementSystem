@@ -120,11 +120,12 @@
     height: 490px;
   }
   .content_box {
-    width: 805px;
-    height: 480px;
-    padding: 50px 0px;
+    height: 750px;
+    padding: 150px 0;
     margin: 0 auto;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
   }
 
   .content_box_img_bg{
@@ -133,8 +134,8 @@
   .content_box_form {
     box-sizing: border-box;
     display: inline-block;
-    width: 320px;
-    height: 300px;
+    width: 420px;
+    height: 320px;
     vertical-align: top;
     text-align: center;
     background-color: #ffffff;
@@ -148,7 +149,7 @@
   h1 {
     list-style-type: none;
     font-family: PingFangSC-Regular;
-    font-size: 20px;
+    font-size: 27px;
     color: #000000;
     letter-spacing: 10px;
   }
