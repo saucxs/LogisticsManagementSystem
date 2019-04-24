@@ -26,7 +26,7 @@ let unActivate = async (ctx, next) => {
                 user.name,
                 md5(salt + user.password + salt),
                 user.email,
-                '4',
+                '1',
                 false,
                 code
             ]);
