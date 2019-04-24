@@ -43,9 +43,31 @@ export const deleteOrder = ({ commit }, params) => {
   })
 }
 
-// orderList
+// transport List
 export const getTransportList = ({ commit }, params) => {
   return Api.getTransportList(params).then(response => {
     return response;
   })
+}
+
+
+// storeList
+export const getStoreList = ({ commit }, params) => {
+  return Api.getStoreList(params).then(response => {
+    return response;
+})
+}
+
+// add store
+export const addStore = ({ commit }, params) => {
+  return Api.addStore(params).then(response => {
+    return response;
+})
+}
+
+// delete store
+export const deleteStore = ({ commit }, params) => {
+  return Api.deleteStore(params).then(response => {
+    return response;
+})
 }

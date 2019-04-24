@@ -5,8 +5,8 @@ const register = require('../controllers/register');
 const login = require('../controllers/login');
 const userInfo = require('../controllers/userInfo.js');
 const order = require('../controllers/order');
-const transport = require('../controllers/transport');
-
+// const transport = require('../controllers/transport');
+const store = require('../controllers/store');
 
 router.prefix(`/${baseApi}`)
 
@@ -18,9 +18,13 @@ router.get('/orderList', verify, order.getOrderList)// 获取订单列表
 router.post('/addOrder', verify, order.addOrder) //添加订单
 router.post('/deleteOrder', verify, order.deleteOrder) //删除订单
 
-router.get('/transportList', verify, transport.getTransportList)// 获取运输单列表
-router.post('/addTransport', verify, transport.addTransport) //添加运输单
-router.post('/deleteTransport', verify, transport.deleteTransport) //删除运输单
+// router.get('/transportList', verify, transport.getTransportList)// 获取运输单列表
+// router.post('/addTransport', verify, transport.addTransport) //添加运输单
+// router.post('/deleteTransport', verify, transport.deleteTransport) //删除运输单
+
+router.get('/storeList', verify, store.getStoreList)// 获取仓库列表
+router.post('/addStore', verify, store.addStore) //添加仓库
+router.post('/deleteStore', verify, store.deleteStore) //删除仓库
 
 console.log("router");
 

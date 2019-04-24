@@ -108,10 +108,25 @@ export default {
     return service.post("/deleteOrder", params)
   },
   /*运输任务*/
-  /* 获取订单列表 - get */
+  /* 获取任务单列表 - get */
   getTransportList: (params) => {
     let data = { params: params };
     return service.get("/transportList", data)
+  },
+
+  /*仓库*/
+  /* 获取仓库列表 - get */
+  getStoreList: (params) => {
+    let data = { params: params };
+    return service.get("/storeList", data)
+  },
+  /* 新增仓库 post */
+  addStore: (params) => {
+    return service.post("/addStore", params)
+  },
+  /* 删除仓库 post */
+  deleteStore: (params) => {
+    return service.post("/deleteStore", params)
   },
   /**
    * API demo
