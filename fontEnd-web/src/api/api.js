@@ -106,7 +106,13 @@ export default {
   /* 删除订单 post */
   deleteOrder: (params) => {
     return service.post("/deleteOrder", params)
-  }
+  },
+  /*运输任务*/
+  /* 获取订单列表 - get */
+  getTransportList: (params) => {
+    let data = { params: params };
+    return service.get("/transportList", data)
+  },
   /**
    * API demo
    *

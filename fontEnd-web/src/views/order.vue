@@ -15,7 +15,7 @@
         </div>
       </el-col>
     </el-row>
-    <p class="tip-p">提醒：可以根据订单ID，收货人姓名，收货人的手机号，模糊查询</p>
+    <p class="tip-p">提醒：可以根据订单ID，订单名称，收货人姓名，收货人的手机号，模糊查询</p>
     <el-table
       :data="orderTableData"
       border

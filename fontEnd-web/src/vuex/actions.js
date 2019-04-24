@@ -42,3 +42,10 @@ export const deleteOrder = ({ commit }, params) => {
     return response;
   })
 }
+
+// orderList
+export const getTransportList = ({ commit }, params) => {
+  return Api.getTransportList(params).then(response => {
+    return response;
+  })
+}

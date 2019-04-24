@@ -71,6 +71,12 @@
     min-width: 146px !important;
     padding-left: 50px !important;
   }
+  .menu .el-menu{
+    overflow: hidden !important;
+  }
+  .el-menu-item, .el-submenu__title{
+    line-height: 55px !important;
+  }
 
   .el-menu-item > a{
     display: block;
