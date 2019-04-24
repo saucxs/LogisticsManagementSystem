@@ -23,17 +23,17 @@
       <el-table-column
         prop="order_id"
         label="订单ID"
-        width="200">
+        width="190">
       </el-table-column>
       <el-table-column
         prop="order_name"
         label="订单名称"
-        width="120">
+        width="80">
       </el-table-column>
       <el-table-column
         prop="order_time"
         label="订单时间"
-        width="160">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="order_goods"
@@ -42,7 +42,7 @@
       <el-table-column
         prop="order_receiver_name"
         label="收件人"
-        width="120">
+        width="70">
       </el-table-column>
       <el-table-column
         prop="order_receiver_phone"
@@ -82,16 +82,16 @@
       <div>
         <el-form label-position="right" label-width="90px" :model="formOrder">
           <el-form-item label="订单名称">
-            <el-input v-model="formOrder.order_name" maxlength="10"></el-input>
+            <el-input v-model="formOrder.order_name" maxlength="16"></el-input>
           </el-form-item>
           <el-form-item label="订单货物">
-            <el-input v-model="formOrder.order_goods" maxlength="10"></el-input>
+            <el-input type="textarea" :rows="2" v-model="formOrder.order_goods" maxlength="60"></el-input>
           </el-form-item>
           <el-form-item label="收获人姓名">
             <el-input v-model="formOrder.order_receiver_name" maxlength="10"></el-input>
           </el-form-item>
           <el-form-item label="收获人手机">
-            <el-input v-model="formOrder.order_receiver_phone" maxlength="20"></el-input>
+            <el-input v-model="formOrder.order_receiver_phone" maxlength="11"></el-input>
           </el-form-item>
           <el-form-item label="收获人地址">
             <el-input v-model="formOrder.order_receiver_address" maxlength="100"></el-input>

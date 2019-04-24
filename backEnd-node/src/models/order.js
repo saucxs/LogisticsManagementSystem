@@ -28,7 +28,8 @@ let getOrderListTotal= function (role, content) {
 
 /*添加订单*/
 let addNewOrder= function (value) {
-    console.log(value, '-------------------------------')
+    console.log(value, '+++++++++++++++++++++++++++++++++++++')
+
     let sql = "insert into order_list(order_id, order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark,is_show) values(?,?,?,?,?,?,?,?,?,?,?)"
     return query(sql, value)
 }
