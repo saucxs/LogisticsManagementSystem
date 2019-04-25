@@ -161,6 +161,21 @@ export default {
     let data = { params: params };
     return service.get("/carListMap", data)
   },
+
+  /*人员*/
+  /* 获取人员列表 - get */
+  getTeamList: (params) => {
+    let data = { params: params };
+    return service.get("/teamList", data)
+  },
+  /* 新增人员 post */
+  addTeam: (params) => {
+    return service.post("/addTeam", params)
+  },
+  /* 删除人员 post */
+  deleteTeam: (params) => {
+    return service.post("/deleteTeam", params)
+  },
   /**
    * API demo
    *

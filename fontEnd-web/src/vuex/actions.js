@@ -119,3 +119,24 @@ export const getCarListMap = ({ commit }, params) => {
     return response;
   })
 }
+
+// teamList
+export const getTeamList = ({ commit }, params) => {
+  return Api.getTeamList(params).then(response => {
+    return response;
+  })
+}
+
+// add team
+export const addTeam = ({ commit }, params) => {
+  return Api.addTeam(params).then(response => {
+    return response;
+  })
+}
+
+// delete team
+export const deleteTeam = ({ commit }, params) => {
+  return Api.deleteTeam(params).then(response => {
+    return response;
+  })
+}

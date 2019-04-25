@@ -8,6 +8,7 @@ const order = require('../controllers/order');
 const transport = require('../controllers/transport');
 const store = require('../controllers/store');
 const car = require('../controllers/car');
+const team = require('../controllers/team');
 
 router.prefix(`/${baseApi}`)
 
@@ -32,6 +33,10 @@ router.get('/carList', verify, car.getCarList)// 获取车辆列表
 router.post('/addCar', verify, car.addCar) //添加车辆
 router.post('/deleteCar', verify, car.deleteCar) //删除车辆
 router.get('/carListMap', verify, car.getCarListMap)// 获取汽车的select项
+
+router.get('/teamList', verify, team.getTeamList)// 获取人员列表
+router.post('/addTeam', verify, team.addStore) //添加人员
+router.post('/deleteTeam', verify, team.deleteStore) //删除人员
 
 console.log("router");
 

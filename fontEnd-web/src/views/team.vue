@@ -1,7 +1,66 @@
 <template>
-  <div class="write-weekly">
+  <div class="team-list">
     <div class="title">人员管理</div>
-
+    <el-row>
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+        <el-col :span="16">
+          <el-input @clear="clear" placeholder="请输入内容" maxlength="20" v-model="searchContent" clearable class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="search()">查询</el-button>
+          </el-input>
+        </el-col>
+      </el-col>
+    </el-row>
+    <p class="tip-p">提醒：可以根据仓库code，仓库名称，模糊查询</p>
+    <el-table
+      :data="teamTableData"
+      border
+      style="width: 100%">
+      <el-table-column
+        prop="store_code"
+        label="仓库CODE"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="store_name"
+        label="仓库名称">
+      </el-table-column>
+      <el-table-column
+        prop="store_time"
+        label="仓库时间"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="shelves_num"
+        label="货架数">
+      </el-table-column>
+      <el-table-column
+        prop="goods_num"
+        label="货物数"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
+        width="160">
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        width="150">
+        <template slot-scope="scope">
+          <el-button @click="operatorStore('edit',scope.row)" type="success" size="small">修改</el-button>
+          <el-button @click="deleteStoreItem(scope.row)" type="danger" size="small">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <div class="pagination-box" v-if="teamTableData.length>0">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        layout="total, prev, pager, next"
+        :total="teamListTotal">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -10,34 +69,124 @@
   export default {
     data(){
       return {
-        weeklyContent: '',
-        currentDate: new Date().toLocaleDateString()
+        currentDate: new Date().toLocaleDateString(),
+        teamTableData: [],
+        teamListTotal: 0,
+        currentPage: 1,
+        searchContent: '',
+        dialogTitle: '',
+        formStore: {
+          store_code: '',
+          store_name: '',
+          store_address:'',
+          store_time: '',
+          shelves_num: '',
+          goods_num: '',
+          operator_name: '',
+          operator_role: '',
+          remark: '',
+        },
+        confirmCreateVisiable: false,
+        loadingFlag: false
       }
+    },
+    created(){
+      this.teamList(1,10);
+    },
+    computed: {
+      ...mapGetters([
+        "userInfo"
+      ])
     },
     methods: {
       ...mapActions([
-        "getUserInfo",
-        "addWeekly"
+        "getTeamList",
+        "addTeam",
+        "deleteTeam"
       ]),
-      submitWeekly(){
-        var params = {
-          content: this.weeklyContent,
-          date: this.currentDate
+      handleCurrentChange(currentPage) {
+        this.teamList(currentPage,10)
+      },
+      search(){
+        this.teamList(1,10);
+      },
+      clear(){
+        this.teamList(1,10);
+      },
+      handleClose(){
+        this.confirmCreateVisiable = false;
+        this.formStore = {};
+        this.teamList(1,10);
+      },
+      teamList(currentPage, pageSize){
+        let params = {
+          operator_role: this.userInfo.role,
+          searchContent: this.searchContent,
+          currentPage: currentPage,
+          pageSize: pageSize
         }
-        this.addWeekly(params).then(res => {
-          if(res.errno == 0 ){
-            this.$message.success(res.errmsg|| '提交成功');
-          }else{
-            this.$message.error(res.errmsg|| '服务开小差');
+        this.getTeamList(params).then(res => {
+          if(res.success){
+            this.teamTableData = res.data.teamList;
+            this.teamListTotal = res.data.total;
+            this.currentPage = currentPage
           }
         })
+      },
+      operatorStore(type, item){
+        if(type == 'add'){
+          this.dialogTitle = '添加仓库';
+          this.confirmCreateVisiable = true;
+
+        }else if(type == 'edit'){
+          this.dialogTitle = '修改仓库';
+          this.confirmCreateVisiable = true;
+          this.formStore = item;
+        }
+      },
+      deleteStoreItem(item){
+        console.log(item, 'item')
+        let param = {
+          id: item.id
+        }
+        this.deleteStore(param).then(res => {
+          console.log(res, 'res')
+          if(res.success){
+            this.$message.success(res.message);
+            this.teamList(this.currentPage,10);
+          }else{
+            this.$message.warning(res.message|| '服务开小差');
+          }
+        })
+      },
+      successConfirm(type){
+        if(!this.formStore.store_code || !this.formStore.store_name || !this.formStore.store_address || !this.formStore.shelves_num || !this.formStore.goods_num || !this.formStore.remark){
+          this.$message.warning('请输入相应内容')
+        }else{
+          this.formStore.type = type;
+          this.formStore.store_time = (new Date()).getTime();
+          this.formStore.operator_name = this.userInfo.name;
+          this.formStore.operator_role = this.userInfo.role;
+          console.log(this.formStore, '-=---------------------------------===========')
+          this.addStore(this.formStore).then(res => {
+            if(res.success){
+              this.$message.success(res.message);
+              this.handleClose();
+            }else{
+              this.$message.warning(res.message|| '服务开小差');
+            }
+          }).catch(err => {
+            console.log(err)
+            this.$message.error('服务器出错啦');
+          });
+        }
       }
     }
   }
 </script>
 
 <style lang="postcss" scoped>
-.write-weekly{
+  .team-list{
 
-}
+  }
 </style>
