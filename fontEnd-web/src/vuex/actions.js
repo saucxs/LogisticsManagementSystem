@@ -29,6 +29,13 @@ export const getOrderList = ({ commit }, params) => {
   })
 }
 
+//getOrderListMap
+export const getOrderListMap = ({ commit }, params) => {
+  return Api.getOrderListMap(params).then(response => {
+    return response;
+  })
+}
+
 // add Order
 export const addOrder = ({ commit }, params) => {
   return Api.addOrder(params).then(response => {
@@ -50,6 +57,19 @@ export const getTransportList = ({ commit }, params) => {
   })
 }
 
+// add transport
+export const addTransport = ({ commit }, params) => {
+  return Api.addTransport(params).then(response => {
+    return response;
+  })
+}
+
+// delete transport
+export const deleteTransport = ({ commit }, params) => {
+  return Api.deleteTransport(params).then(response => {
+    return response;
+  })
+}
 
 // storeList
 export const getStoreList = ({ commit }, params) => {
@@ -70,4 +90,32 @@ export const deleteStore = ({ commit }, params) => {
   return Api.deleteStore(params).then(response => {
     return response;
 })
+}
+
+// carList
+export const getCarList = ({ commit }, params) => {
+  return Api.getCarList(params).then(response => {
+    return response;
+  })
+}
+
+// add car
+export const addCar = ({ commit }, params) => {
+  return Api.addCar(params).then(response => {
+    return response;
+  })
+}
+
+// delete car
+export const deleteCar = ({ commit }, params) => {
+  return Api.deleteCar(params).then(response => {
+    return response;
+  })
+}
+
+//getCarListMap
+export const getCarListMap = ({ commit }, params) => {
+  return Api.getCarListMap(params).then(response => {
+    return response;
+  })
 }

@@ -99,6 +99,11 @@ export default {
     let data = { params: params };
     return service.get("/orderList", data)
   },
+  /*获取订单的select项*/
+  getOrderListMap: (params) => {
+    let data = { params: params };
+    return service.get("/orderListMap", data)
+  },
   /* 新增订单 post */
   addOrder: (params) => {
     return service.post("/addOrder", params)
@@ -112,6 +117,14 @@ export default {
   getTransportList: (params) => {
     let data = { params: params };
     return service.get("/transportList", data)
+  },
+  /* 新增订单 post */
+  addTransport: (params) => {
+    return service.post("/addTransport", params)
+  },
+  /* 删除订单 post */
+  deleteTransport: (params) => {
+    return service.post("/deleteTransport", params)
   },
 
   /*仓库*/
@@ -127,6 +140,26 @@ export default {
   /* 删除仓库 post */
   deleteStore: (params) => {
     return service.post("/deleteStore", params)
+  },
+
+  /*车辆*/
+  /* 获取汽车列表 - get */
+  getCarList: (params) => {
+    let data = { params: params };
+    return service.get("/carList", data)
+  },
+  /* 新增仓库 post */
+  addCar: (params) => {
+    return service.post("/addCar", params)
+  },
+  /* 删除仓库 post */
+  deleteCar: (params) => {
+    return service.post("/deleteCar", params)
+  },
+  /*获取汽车的select项*/
+  getCarListMap: (params) => {
+    let data = { params: params };
+    return service.get("/carListMap", data)
   },
   /**
    * API demo

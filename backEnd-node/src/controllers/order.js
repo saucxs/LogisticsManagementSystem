@@ -6,7 +6,6 @@ const {randomString,toNomalTime} = require('../utils/common');
  * @param
  * @return
  */
-
 let getOrderList = async (ctx, next) => {
     console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
     let page =  Number(ctx.query.currentPage || 1),
@@ -31,6 +30,23 @@ let getOrderList = async (ctx, next) => {
 	};
 };
 
+
+/**
+ *  获取订单的select项
+ * @param
+ * @return
+ */
+let getOrderListMap = async (ctx, next) => {
+    let role = ctx.query.operator_role;
+    const RowDataPacket = await orderModel.getOrderListMap(role),
+        orderListMap = JSON.parse(JSON.stringify(RowDataPacket));
+    ctx.body = {
+        success: true,
+        data: {
+            orderListMap: orderListMap
+        }
+    };
+};
 
 
 /**
@@ -57,6 +73,7 @@ let addOrder = async (ctx, next) => {
             params.operator_name,
             params.operator_role,
             params.remark,
+            1,
             1
         ]);
         ctx.body = {
@@ -108,6 +125,7 @@ let deleteOrder = async (ctx, next) => {
 
 module.exports = {
 	getOrderList,
+    getOrderListMap,
     addOrder,
     deleteOrder
 };

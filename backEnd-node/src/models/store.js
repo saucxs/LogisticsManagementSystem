@@ -3,9 +3,7 @@ const {query} = require('../utils/db');
 /*获取仓库列表 - 分页 */
 let getStoreListPagination= function (role, content, pageIndex, pageNum) {
     let sql;
-    console.log(content, '000000000000000000000000000')
     if(content){
-        console.log(content, '111111111111111111111111')
         sql = `SELECT * FROM store_list WHERE operator_role = ${role} and is_show = 1 AND CONCAT(store_code, store_name) like "%${content}%" ORDER BY store_time DESC LIMIT ${pageIndex},${pageNum}`
         return query(sql, [role, content, pageIndex, pageNum ])
     }else{
@@ -28,23 +26,21 @@ let getStoreListTotal= function (role, content) {
 
 /*添加仓库*/
 let addNewStore= function (value) {
-    console.log(value, '+++++++++++++++++++++++++++++++++++++')
-
-    let sql = "insert into order_list(order_id, order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark,is_show) values(?,?,?,?,?,?,?,?,?,?,?)"
+    let sql = "insert into store_list(store_code, store_name, store_address, store_time, shelves_num, goods_num, operator_name, operator_role, remark, is_show) values(?,?,?,?,?,?,?,?,?,?)"
     return query(sql, value)
 }
 
 /*修改仓库*/
-let editNewStore= function (order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, id) {
-    console.log(order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, '==============================')
-    let sql = "update order_list set order_name = ?, order_goods = ?, order_time = ?, order_receiver_name = ?, order_receiver_phone = ?, order_receiver_address = ?, operator_name = ?, operator_role = ?, remark = ? where order_id = ? AND  id = ?"
-    return query(sql, [order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, id])
+let editNewStore= function (store_code, store_name, store_address, store_time, shelves_num, goods_num, operator_name, operator_role, remark, id) {
+    console.log(store_code, store_name, store_address, store_time, shelves_num, goods_num, operator_name, operator_role, remark, '==============================')
+    let sql = "update store_list set store_code = ?, store_name = ?, store_address = ?, store_time = ?, shelves_num = ?, goods_num = ?, operator_name = ?, operator_role = ?, remark = ? where id = ?"
+    return query(sql, [store_code, store_name, store_address, store_time, shelves_num, goods_num, operator_name, operator_role, remark, id])
 }
 
 /*删除仓库*/
 let deleteStore= function (value) {
     console.log(value, '-------------------------------')
-    let sql = "update order_list set is_show = ? where order_id = ?"
+    let sql = "update store_list set is_show = ? where id = ?"
     return query(sql, value)
 }
 

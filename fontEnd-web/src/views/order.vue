@@ -23,7 +23,7 @@
       <el-table-column
         prop="order_id"
         label="订单ID"
-        width="190">
+        width="110">
       </el-table-column>
       <el-table-column
         prop="order_name"
@@ -34,6 +34,13 @@
         prop="order_time"
         label="订单时间"
         width="100">
+      </el-table-column>
+      <el-table-column
+        label="订单状态"
+        width="80">
+        <template slot-scope="scope">
+          {{scope.row.order_status | orderStateFilter}}
+        </template>
       </el-table-column>
       <el-table-column
         prop="order_goods"
@@ -48,11 +55,6 @@
         prop="order_receiver_phone"
         label="收件人手机"
         width="120">
-      </el-table-column>
-      <el-table-column
-        prop="order_receiver_address"
-        label="收件人地址"
-        width="140">
       </el-table-column>
       <el-table-column
         label="操作"
@@ -99,10 +101,6 @@
           <el-form-item label="备注">
             <el-input v-model="formOrder.remark" maxlength="30"></el-input>
           </el-form-item>
-          <!--<el-form-item label="工号">-->
-            <!--<el-input v-if="dialogTitle == '添加人员信息'"  v-model="formOrder.usernum" maxlength="13"></el-input>-->
-            <!--<el-input v-if="dialogTitle == '修改人员信息'" :disabled="true" v-model="formOrder.usernum" maxlength="13"></el-input>-->
-          <!--</el-form-item>-->
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -143,6 +141,15 @@
     },
     created(){
       this.orderList(1,10);
+    },
+    filters:{
+      orderStateFilter(val){
+        if(val === 1) return '进行'
+        if(val === 2) return '结束'
+        if(val === 3) return '退货'
+        if(val === 4) return '错误'
+        else return '-'
+      }
     },
     computed: {
       ...mapGetters([

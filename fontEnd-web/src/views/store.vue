@@ -15,7 +15,7 @@
         </div>
       </el-col>
     </el-row>
-    <p class="tip-p">提醒：可以根据订单ID，订单名称，收货人姓名，收货人的手机号，模糊查询</p>
+    <p class="tip-p">提醒：可以根据仓库code，仓库名称，模糊查询</p>
     <el-table
       :data="storeTableData"
       border
@@ -44,11 +44,16 @@
         width="160">
       </el-table-column>
       <el-table-column
+        prop="remark"
+        label="备注"
+        width="160">
+      </el-table-column>
+      <el-table-column
         label="操作"
         width="150">
         <template slot-scope="scope">
           <el-button @click="operatorStore('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button @click="deleteStoreItem(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +66,41 @@
         :total="storeListTotal">
       </el-pagination>
     </div>
-
+    <!--dialog-->
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="confirmCreateVisiable"
+      :before-close="handleClose"
+      width="600px"
+      center>
+      <div>
+        <el-form label-position="right" label-width="90px" :model="formStore">
+          <el-form-item label="仓库CODE">
+            <el-input v-model="formStore.store_code" maxlength="16"></el-input>
+          </el-form-item>
+          <el-form-item label="仓库名称">
+            <el-input v-model="formStore.store_name" maxlength="16"></el-input>
+          </el-form-item>
+          <el-form-item label="仓库地址">
+            <el-input v-model="formStore.store_address" maxlength="16"></el-input>
+          </el-form-item>
+          <el-form-item label="货架数">
+            <el-input v-model="formStore.shelves_num" maxlength="11"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数">
+            <el-input v-model="formStore.goods_num" maxlength="11"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="formStore.remark" maxlength="30"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="handleClose()">取 消</el-button>
+          <el-button v-if="dialogTitle == '添加仓库'" type="primary" :loading="loadingFlag" @click="successConfirm('add')">确 定</el-button>
+          <el-button v-if="dialogTitle == '修改仓库'" type="primary" :loading="loadingFlag" @click="successConfirm('edit')">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,12 +117,12 @@
         searchContent: '',
         dialogTitle: '',
         formStore: {
-          order_name: '',
-          order_goods: '',
-          order_time: '',
-          order_receiver_name: '',
-          order_receiver_phone: '',
-          order_receiver_address: '',
+          store_code: '',
+          store_name: '',
+          store_address:'',
+          store_time: '',
+          shelves_num: '',
+          goods_num: '',
           operator_name: '',
           operator_role: '',
           remark: '',
@@ -103,8 +142,8 @@
     methods: {
       ...mapActions([
         "getStoreList",
-        "addOrder",
-        "deleteOrder"
+        "addStore",
+        "deleteStore"
       ]),
       handleCurrentChange(currentPage) {
         this.storeList(currentPage,10)
@@ -146,12 +185,12 @@
           this.formStore = item;
         }
       },
-      deleteOrderItem(item){
+      deleteStoreItem(item){
         console.log(item, 'item')
         let param = {
-          order_id: item.order_id
+          id: item.id
         }
-        this.deleteOrder(param).then(res => {
+        this.deleteStore(param).then(res => {
           console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
@@ -162,15 +201,15 @@
         })
       },
       successConfirm(type){
-        if(!this.formStore.order_name || !this.formStore.order_goods || !this.formStore.order_receiver_name || !this.formStore.order_receiver_phone || !this.formStore.order_receiver_address || !this.formStore.remark){
+        if(!this.formStore.store_code || !this.formStore.store_name || !this.formStore.store_address || !this.formStore.shelves_num || !this.formStore.goods_num || !this.formStore.remark){
           this.$message.warning('请输入相应内容')
         }else{
           this.formStore.type = type;
-          this.formStore.order_time = (new Date()).getTime();
+          this.formStore.store_time = (new Date()).getTime();
           this.formStore.operator_name = this.userInfo.name;
           this.formStore.operator_role = this.userInfo.role;
           console.log(this.formStore, '-=---------------------------------===========')
-          this.addOrder(this.formStore).then(res => {
+          this.addStore(this.formStore).then(res => {
             if(res.success){
               this.$message.success(res.message);
               this.handleClose();
