@@ -14,7 +14,7 @@ let getTeamList = async (ctx, next) => {
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum;
 	const RowDataPacket = await teamModel.getTeamListPagination(role,content,pageIndex,pageNum),
-		orderList = JSON.parse(JSON.stringify(RowDataPacket));
+        teamList = JSON.parse(JSON.stringify(RowDataPacket));
 	const RowDataPacketTotal = await teamModel.getTeamListTotal(role,content),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
 	ctx.body = {
@@ -29,11 +29,11 @@ let getTeamList = async (ctx, next) => {
 
 
 /**
- *  新增仓库和修改仓库
+ *  新增人员和修改人员
  * @param
  * @return
  */
-let addStore = async (ctx, next) => {
+let addTeam = async (ctx, next) => {
     let params = ctx.request.body;
 	if(params.type === 'add'){
         await storeModel.addNewStore([
@@ -55,7 +55,6 @@ let addStore = async (ctx, next) => {
                 }
             }
         })
-
 	}else if(params.type === 'edit' && params.store_code){
         await storeModel.editNewStore(
             params.store_code,
@@ -98,6 +97,6 @@ let deleteStore = async (ctx, next) => {
 
 module.exports = {
     getTeamList,
-    addStore,
+    addTeam,
     deleteStore
 };

@@ -4,10 +4,10 @@ const {query} = require('../utils/db');
 let getTeamListPagination = function (role, content, pageIndex, pageNum) {
     let sql;
     if(content){
-        sql = `SELECT * FROM user_info WHERE role = ${role} and is_show = 1 AND name like "%${content}%" ORDER BY id DESC LIMIT ${pageIndex},${pageNum}`
+        sql = `SELECT * FROM user_info WHERE role >= ${role} and is_show = 1 AND name like "%${content}%" ORDER BY activateDate DESC LIMIT ${pageIndex},${pageNum}`
         return query(sql, [role, content, pageIndex, pageNum ])
     }else{
-        sql = "SELECT * FROM user_info WHERE role = ? and is_show = ? ORDER BY id DESC LIMIT ?,?"
+        sql = "SELECT * FROM user_info WHERE role >= ? and is_show = ? ORDER BY activateDate DESC LIMIT ?,?"
         return query(sql, [role, 1, pageIndex, pageNum ])
     }
 }
@@ -16,10 +16,10 @@ let getTeamListPagination = function (role, content, pageIndex, pageNum) {
 /*获取人员列表 - 总数 */
 let getTeamListTotal = function (role, content) {
     if(content) {
-        let sql = `SELECT * from user_info where role = ${role} and is_show = 1 and name like "%${content}%"`
+        let sql = `SELECT * from user_info where role >= ${role} and is_show = 1 and name like "%${content}%"`
         return query(sql, [role, content])
     }else{
-        let sql = "SELECT * from user_info where role = ? and is_show = ?"
+        let sql = "SELECT * from user_info where role >= ? and is_show = ?"
         return query(sql, [role, 1])
     }
 }

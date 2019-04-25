@@ -17,7 +17,6 @@ let getTransportList = async (ctx, next) => {
         transportList = JSON.parse(JSON.stringify(RowDataPacket));
 	const RowDataPacketTotal = await transportModel.getTransportListTotal(role,content),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
-	console.log(transportList , total, '==-=-=------7777777777777777777777777777777777777777777')
 
     ctx.body = {
         success: true,
