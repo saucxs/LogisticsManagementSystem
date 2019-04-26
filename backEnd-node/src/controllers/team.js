@@ -51,27 +51,22 @@ let addTeam = async (ctx, next) => {
             if(res){
                 ctx.body = {
                     success: true,
-                    message: "仓库编码Code为"+ params.store_code +"添加成功"
+                    message: "人员ID为"+ params.id +"添加成功"
                 }
             }
         })
-	}else if(params.type === 'edit' && params.store_code){
-        await storeModel.editNewStore(
-            params.store_code,
-            params.store_name,
-            params.store_address,
-            toNomalTime(params.store_time),
-            params.shelves_num,
-            params.goods_num,
+	}else if(params.type === 'edit' && params.id){
+        await teamModel.editNewTeam(
+            Number(params.role),
+            toNomalTime(params.operator_time),
             params.operator_name,
             params.operator_role,
-            params.remark,
             params.id,
         ).then(res => {
             if (res) {
                 ctx.body = {
                     success: true,
-                    message: "仓库编码Code为："+ params.order_id +"修改成功"
+                    message: "人员ID为："+ params.id +"修改成功"
                 }
             }
         })
@@ -79,17 +74,17 @@ let addTeam = async (ctx, next) => {
 };
 
 /*删除订单*/
-let deleteStore = async (ctx, next) => {
+let deleteTeam = async (ctx, next) => {
     let params = ctx.request.body;
     console.log(params.id, '2222222222222222222222222')
     let id = params.id;
-    await storeModel.deleteStore([0, id]).then(res => {
+    await teamModel.deleteTeam([0, id]).then(res => {
         if(res){
             ctx.body = {
                 success: true,
-                message: '删除仓库成功'
+                message: '删除人员成功'
             };
-            console.log("删除仓库成功");
+            console.log("删除人员成功");
         }
     })
 }
@@ -98,5 +93,5 @@ let deleteStore = async (ctx, next) => {
 module.exports = {
     getTeamList,
     addTeam,
-    deleteStore
+    deleteTeam
 };

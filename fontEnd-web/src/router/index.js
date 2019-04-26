@@ -10,6 +10,7 @@ import team from '@/views/team'
 import order from '@/views/order'
 import car from '@/views/car'
 import transport from '@/views/transport'
+import orderCollect from '@/views/orderCollect'
 
 Vue.use(Router)
 
@@ -60,6 +61,28 @@ const router = new Router({
           role: 3
         },
         component: home
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '订单统计',
+        key: '1-10',
+        role: 3
+      },
+      component: layout,
+      children: [{
+        path: '/manage/order',
+        name: 'home',
+        icon: 'el-icon-goods',
+        meta: {
+          zhName: '订单统计',
+          key: '1-11',
+          role: 3
+        },
+        component: orderCollect
       }]
     },
     {

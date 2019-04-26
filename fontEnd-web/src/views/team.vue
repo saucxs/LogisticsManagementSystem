@@ -18,7 +18,7 @@
       <el-table-column
         prop="name"
         label="姓名"
-        width="120">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="email"
@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column
         label="角色"
-        width="80">
+        width="100">
         <template slot-scope="scope">
           {{scope.row.role | roleFilter}}
         </template>
@@ -76,7 +76,7 @@
       <div>
         <el-form label-position="right" label-width="90px" :model="formTeam">
           <el-form-item label="修改角色：">
-            <el-radio v-model="formTeam.role" label="1">管理员</el-radio>
+            <!--<el-radio v-model="formTeam.role" label="1">管理员</el-radio>-->
             <el-radio v-model="formTeam.role" label="2">仓库管理员</el-radio>
             <el-radio v-model="formTeam.role" label="3">司机</el-radio>
             <el-radio v-model="formTeam.role" label="4">押运员</el-radio>
@@ -186,7 +186,7 @@
         let param = {
           id: item.id
         }
-        this.deleteStore(param).then(res => {
+        this.deleteTeam(param).then(res => {
           console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
@@ -198,6 +198,9 @@
       },
       successConfirm(type){
         this.formTeam.type = type;
+        this.formTeam.operator_time = (new Date()).getTime();
+        this.formTeam.operator_name = this.userInfo.name;
+        this.formTeam.operator_role = this.userInfo.role;
         this.addTeam(this.formTeam).then(res => {
           if(res.success){
             this.$message.success(res.message);

@@ -62,6 +62,11 @@
         width="100">
       </el-table-column>
       <el-table-column
+        prop="remark"
+        label="备注"
+        width="100">
+      </el-table-column>
+      <el-table-column
         label="操作"
         width="150">
         <template slot-scope="scope">

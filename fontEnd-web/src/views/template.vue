@@ -37,7 +37,7 @@
 </script>
 
 <style lang="postcss" scoped>
-.write-weekly{
+  .write-weekly{
 
-}
+  }
 </style>

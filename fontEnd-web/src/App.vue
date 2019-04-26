@@ -190,4 +190,14 @@
     text-align: center;
   }
 
+  .success-color{
+    color: #67C23A;
+  }
+  .warning-color{
+    color: #E6A23C;
+  }
+  .danger-color{
+    color: #F56C6C;
+  }
+
 </style>

@@ -37,7 +37,9 @@
       <el-table-column
         label="车辆状态">
         <template slot-scope="scope">
-          {{scope.row.car_state | carStateFilter}}
+          <span v-if="scope.row.car_state === 1" class="success-color"> {{scope.row.car_state | carStateFilter}}</span>
+          <span v-if="scope.row.car_state === 2" class="danger-color"> {{scope.row.car_state | carStateFilter}}</span>
+          <span v-if="scope.row.car_state === 3" class="danger-color"> {{scope.row.car_state | carStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column

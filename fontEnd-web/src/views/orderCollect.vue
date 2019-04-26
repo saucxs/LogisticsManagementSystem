@@ -1,15 +1,11 @@
 <template>
   <div class="write-weekly">
-    <div class="title">概览</div>
-    <panel-group :category="personCategory" :allData="allData" @handleSetLineChartData="handleSetLineChartData" />
+    <div class="title">订单统计</div>
+    <order-group :category="personCategory" :allData="allData" @handleSetLineChartData="handleSetLineChartData" />
     <el-row>
       <el-col :span="12">
-        <div class="title">人员角色分布</div>
+        <div class="title">订单状态分布</div>
         <div id="echartss" style="height: 350px;width: 95%;"></div>
-      </el-col>
-      <el-col :span="12">
-        <div class="title">汽车状态分布</div>
-        <div id="echart2" style="height: 350px;width: 95%;"></div>
       </el-col>
     </el-row>
   </div>
@@ -17,11 +13,11 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import PanelGroup from '../components/PanelGroup'
+  import OrderGroup from '../components/OrderGroup'
   import echarts from 'echarts'
   export default {
     components: {
-      PanelGroup,
+      OrderGroup,
     },
     data(){
       return {
@@ -42,7 +38,9 @@
           'reject': '退货',
           'error': '错误'
         },
-        dataList:[],
+        dataList: [],
+        dataListCar: [],
+        dataListOrder: []
       }
     },
     created(){
@@ -75,6 +73,13 @@
         if(val === 3) return '报废'
         else return '-'
       },
+      orderStateFilter(val){
+        if(val === 1) return '进行订单'
+        if(val === 2) return '结束订单'
+        if(val === 3) return '退货订单'
+        if(val === 4) return '错误订单'
+        else return '-'
+      },
       drawPhoto(myChart, data){
         // 基于准备好的dom，初始化echarts实例
         // let myChart = echarts.init(document.getElementById('echartss'))
@@ -85,7 +90,7 @@
           },
           series : [
             {
-              name:'人员分配',
+              name:'订单状态分布',
               type: 'pie',
               radius : '80%',
               center: ['52%', '53%'],
@@ -113,22 +118,21 @@
         this.categoryData(params).then(res => {
           console.log(res, 'res')
           if(res.success){
-            this.dataList = res.data.categoryPerson.map((item) => {
-             return {
-               name: this.roleFilter(item.role),
-               value: item.roleValue
-             }
-            })
-            this.dataListCar = res.data.categoryCar.map((item) => {
+            this.dataListOrder = res.data.orderNumber.map((item) => {
               return {
-                name: this.carStateFilter(item.car_state),
-                value: item.stateValue
+                name: this.orderStateFilter(item.order_status),
+                value: item.orderNumber
               }
             })
+            res.data.ingOrder=0,res.data.endOrder=0,res.data.rejectOrder=0,res.data.errorOrder=0;
+           for(let i=0,length=res.data.orderNumber.length;i<length;i++){
+             if(res.data.orderNumber[i].order_status === 1){res.data.ingOrder=res.data.orderNumber[i].orderNumber};
+             if(res.data.orderNumber[i].order_status === 2){res.data.endOrder=res.data.orderNumber[i].orderNumber};
+             if(res.data.orderNumber[i].order_status === 3){res.data.rejectOrder=res.data.orderNumber[i].orderNumber};
+             if(res.data.orderNumber[i].order_status === 4){res.data.errorOrder=res.data.orderNumber[i].orderNumber}
+           }
             let myChart = echarts.init(document.getElementById('echartss'))
-            let myChart2 = echarts.init(document.getElementById('echart2'))
-            this.drawPhoto(myChart, this.dataList)
-            this.drawPhoto(myChart2, this.dataListCar)
+            this.drawPhoto(myChart, this.dataListOrder)
             this.allData = res.data;
           }
         })

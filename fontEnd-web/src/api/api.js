@@ -94,6 +94,11 @@ export default {
     let data = { params: params };
     return service.get("/activate", data)
   },
+  /* 分类数据 - get */
+  categoryData: (params) => {
+    let data = { params: params };
+    return service.get("/categoryData", data)
+  },
   /* 获取订单列表 - get */
   getOrderList: (params) => {
     let data = { params: params };

@@ -22,6 +22,13 @@ export const activateEmail = ({ commit }, params) => {
   })
 }
 
+// categoryData
+export const categoryData = ({ commit }, params) => {
+  return Api.categoryData(params).then(response => {
+    return response;
+  })
+}
+
 // orderList
 export const getOrderList = ({ commit }, params) => {
   return Api.getOrderList(params).then(response => {

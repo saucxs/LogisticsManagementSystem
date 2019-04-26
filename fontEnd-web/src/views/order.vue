@@ -39,7 +39,10 @@
         label="订单状态"
         width="80">
         <template slot-scope="scope">
-          {{scope.row.order_status | orderStateFilter}}
+          <span v-if="scope.row.order_status === 1" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 2" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -54,6 +57,11 @@
       <el-table-column
         prop="order_receiver_phone"
         label="收件人手机"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注"
         width="120">
       </el-table-column>
       <el-table-column

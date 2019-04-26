@@ -11,6 +11,11 @@ import store from './vuex'
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
+//这一行：
+import echarts from 'echarts'
+//和这一行：
+Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false
 
 // use

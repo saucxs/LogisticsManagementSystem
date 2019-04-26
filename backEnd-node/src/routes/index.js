@@ -4,6 +4,7 @@ const verify = require('../middlewares/verify');
 const register = require('../controllers/register');
 const login = require('../controllers/login');
 const userInfo = require('../controllers/userInfo.js');
+const home = require('../controllers/home');
 const order = require('../controllers/order');
 const transport = require('../controllers/transport');
 const store = require('../controllers/store');
@@ -15,6 +16,9 @@ router.prefix(`/${baseApi}`)
 router.post('/login', login) //登陆
 router.post('/register', register.unActivate) //注册-未激活
 router.get('/activate', register.activate) //注册-激活
+
+/*大盘*/
+router.get('/categoryData', verify, home.getCategoryData)// 获取订单列表
 
 router.get('/orderList', verify, order.getOrderList)// 获取订单列表
 router.post('/addOrder', verify, order.addOrder) //添加订单
@@ -36,7 +40,7 @@ router.get('/carListMap', verify, car.getCarListMap)// 获取汽车的select项
 
 router.get('/teamList', verify, team.getTeamList)// 获取人员列表
 router.post('/addTeam', verify, team.addTeam) //添加人员
-router.post('/deleteTeam', verify, team.deleteStore) //删除人员
+router.post('/deleteTeam', verify, team.deleteTeam) //删除人员
 
 console.log("router");
 
