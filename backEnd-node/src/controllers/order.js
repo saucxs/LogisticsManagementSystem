@@ -67,6 +67,7 @@ let addOrder = async (ctx, next) => {
             params.order_name,
             params.order_goods,
             toNomalTime(params.order_time),
+            toNomalTime(params.order_time).substring(0,10),
             params.order_receiver_name,
             params.order_receiver_phone,
             params.order_receiver_address,

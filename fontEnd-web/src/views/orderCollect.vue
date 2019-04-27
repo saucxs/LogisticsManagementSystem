@@ -1,23 +1,35 @@
 <template>
   <div class="write-weekly">
     <div class="title">订单统计</div>
-    <order-group :category="personCategory" :allData="allData" @handleSetLineChartData="handleSetLineChartData" />
+    <order-group :category="personCategory" :allData="allData"/>
     <el-row>
-      <el-col :span="12">
+      <el-col :span="16">
+        <!--线形图-->
+        <div class="title">最近一周订单数量</div>
+        <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+          <line-chart :chart-data="lineChartData"/>
+        </el-row>
+      </el-col>
+      <el-col :span="8">
         <div class="title">订单状态分布</div>
         <div id="echartss" style="height: 350px;width: 95%;"></div>
       </el-col>
     </el-row>
+
+
   </div>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
   import OrderGroup from '../components/OrderGroup'
+  import LineChart from '../components/LineChart'
   import echarts from 'echarts'
+
   export default {
     components: {
       OrderGroup,
+      LineChart,
     },
     data(){
       return {
@@ -40,7 +52,8 @@
         },
         dataList: [],
         dataListCar: [],
-        dataListOrder: []
+        dataListOrder: [],
+        lineChartData: {}
       }
     },
     created(){
@@ -57,7 +70,7 @@
     methods: {
       ...mapActions([
         "getUserInfo",
-        "categoryData"
+        "categoryOrder"
       ]),
       roleFilter(val) {
         if (val === 1) return '管理员'
@@ -107,15 +120,12 @@
           ]
         })
       },
-      handleSetLineChartData(type) {
-        this.lineChartData = lineChartData[type]
-      },
       queryCategoryData(){
         let params = {
           name: this.userInfo.name,
           role: this.userInfo.role
         }
-        this.categoryData(params).then(res => {
+        this.categoryOrder(params).then(res => {
           console.log(res, 'res')
           if(res.success){
             this.dataListOrder = res.data.orderNumber.map((item) => {
@@ -131,8 +141,14 @@
              if(res.data.orderNumber[i].order_status === 3){res.data.rejectOrder=res.data.orderNumber[i].orderNumber};
              if(res.data.orderNumber[i].order_status === 4){res.data.errorOrder=res.data.orderNumber[i].orderNumber}
            }
-            let myChart = echarts.init(document.getElementById('echartss'))
-            this.drawPhoto(myChart, this.dataListOrder)
+            let myChart = echarts.init(document.getElementById('echartss'));
+            this.drawPhoto(myChart, this.dataListOrder);
+            this.lineChartData = {
+              allOrder: res.data.categoryAllOrderNumber,
+              endOrder: res.data.categoryEndOrderNumber,
+              ingOrder: res.data.categoryIngOrderNumber
+            };
+            console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;
           }
         })
@@ -143,7 +159,7 @@
         myChart.setOption({
           backgroundColor: '#eee',
           title: {
-            text: '人员分布图',
+            text: '订单状态分布图',
             left: 'center',
             top: 20,
             textStyle: {
@@ -164,7 +180,7 @@
           },
           series : [
             {
-              name:'人员分布图',
+              name:'订单状态分布图',
               type: 'pie',
               radius : '55%',
               center: ['50%', '60%'],

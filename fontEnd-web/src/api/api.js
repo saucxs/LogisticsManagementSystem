@@ -94,10 +94,15 @@ export default {
     let data = { params: params };
     return service.get("/activate", data)
   },
-  /* 分类数据 - get */
+  /* 分类数据大盘 - get */
   categoryData: (params) => {
     let data = { params: params };
     return service.get("/categoryData", data)
+  },
+  /* 分类数据订单 - get */
+  categoryOrder: (params) => {
+    let data = { params: params };
+    return service.get("/categoryOrder", data)
   },
   /* 获取订单列表 - get */
   getOrderList: (params) => {

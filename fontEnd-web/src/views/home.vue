@@ -8,7 +8,7 @@
         <div id="echartss" style="height: 350px;width: 95%;"></div>
       </el-col>
       <el-col :span="12">
-        <div class="title">汽车状态分布</div>
+        <div class="title">车辆状态分布</div>
         <div id="echart2" style="height: 350px;width: 95%;"></div>
       </el-col>
     </el-row>

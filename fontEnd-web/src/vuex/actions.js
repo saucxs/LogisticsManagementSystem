@@ -29,6 +29,13 @@ export const categoryData = ({ commit }, params) => {
   })
 }
 
+// categoryOrder
+export const categoryOrder = ({ commit }, params) => {
+  return Api.categoryOrder(params).then(response => {
+    return response;
+  })
+}
+
 // orderList
 export const getOrderList = ({ commit }, params) => {
   return Api.getOrderList(params).then(response => {

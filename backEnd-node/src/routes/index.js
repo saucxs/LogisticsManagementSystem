@@ -19,6 +19,8 @@ router.get('/activate', register.activate) //注册-激活
 
 /*大盘*/
 router.get('/categoryData', verify, home.getCategoryData)// 获取订单列表
+/*订单统计*/
+router.get('/categoryOrder', verify, home.getCategoryOrder)// 获取订单列表
 
 router.get('/orderList', verify, order.getOrderList)// 获取订单列表
 router.post('/addOrder', verify, order.addOrder) //添加订单
