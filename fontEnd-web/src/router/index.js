@@ -92,7 +92,7 @@ const router = new Router({
       meta: {
         zhName: '管理员管理',
         key: '2',
-        role: 3
+        role: 4
       },
       component: layout,
       children: [{
