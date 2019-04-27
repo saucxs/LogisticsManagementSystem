@@ -44,6 +44,8 @@ let deleteStore= function (value) {
     return query(sql, value)
 }
 
+
+
 module.exports = {
     getStoreListPagination,
     getStoreListTotal,
