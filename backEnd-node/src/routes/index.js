@@ -21,6 +21,8 @@ router.get('/activate', register.activate) //注册-激活
 router.get('/categoryData', verify, home.getCategoryData)// 获取订单列表
 /*订单统计*/
 router.get('/categoryOrder', verify, home.getCategoryOrder)// 获取订单列表
+/*运输单统计*/
+router.get('/categoryTransport', verify, home.getCategoryTransport)// 获取订单列表
 
 router.get('/orderList', verify, order.getOrderList)// 获取订单列表
 router.post('/addOrder', verify, order.addOrder) //添加订单
@@ -43,6 +45,9 @@ router.get('/carListMap', verify, car.getCarListMap)// 获取汽车的select项
 router.get('/teamList', verify, team.getTeamList)// 获取人员列表
 router.post('/addTeam', verify, team.addTeam) //添加人员
 router.post('/deleteTeam', verify, team.deleteTeam) //删除人员
+router.get('/teamListMap', verify, team.getTeamListMap)// 获取汽车的select项
+
+router.get('/personTransportList', verify, team.getPersonalTransportList)// 获取人员列表
 
 console.log("router");
 

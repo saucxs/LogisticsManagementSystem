@@ -49,6 +49,7 @@
         width="160">
       </el-table-column>
       <el-table-column
+        v-if="userInfo.role === 1"
         label="操作"
         width="150">
         <template slot-scope="scope">

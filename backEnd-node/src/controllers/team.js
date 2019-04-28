@@ -87,11 +87,57 @@ let deleteTeam = async (ctx, next) => {
             console.log("删除人员成功");
         }
     })
-}
+};
+
+/**
+ *  获取人员的select项
+ * @param
+ * @return
+ */
+let getTeamListMap = async (ctx, next) => {
+    let role = ctx.query.operator_role;
+    const RowDataPacket = await teamModel.getTeamListMap(role),
+        teamListMap = JSON.parse(JSON.stringify(RowDataPacket));
+    ctx.body = {
+        success: true,
+        data: {
+            teamListMap: teamListMap
+        }
+    };
+};
+
+
+/**
+ *  用户查询订单状态
+ * @param
+ * @return
+ */
+
+let getPersonalTransportList = async (ctx, next) => {
+    let page =  Number(ctx.query.currentPage || 1),
+        pageNum = Number(ctx.query.pageSize || 10),
+        role = ctx.query.operator_role,
+        name = ctx.query.operator_name,
+        content = ctx.query.searchContent;
+    let pageIndex = (page - 1) * pageNum;
+    const RowDataPacket = await teamModel.getPersonalListPagination(role,name,content,pageIndex,pageNum),
+        teamList = JSON.parse(JSON.stringify(RowDataPacket));
+    const RowDataPacketTotal = await teamModel.getPersonalListTotal(role,name,content),
+        total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
+    ctx.body = {
+        success: true,
+        data: {
+            teamList: teamList,
+            total: total
+        }
+    };
+};
 
 
 module.exports = {
     getTeamList,
     addTeam,
-    deleteTeam
+    deleteTeam,
+    getTeamListMap,
+    getPersonalTransportList
 };

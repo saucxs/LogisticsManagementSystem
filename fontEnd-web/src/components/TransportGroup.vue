@@ -1,80 +1,80 @@
 <template>
   <el-row :gutter="40" class="panel-group" :allData="allData">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
+      <div class="card-panel" @click="go('transport')">
         <svg class="card-panel-icon icon-message" aria-hidden="true">
           <use xlink:href="#icondingdan"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            所有订单
+            所有运输单
           </div>
-          <count-to :start-val="0" :end-val="allData.allOrderNumber" :duration="1800" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.allTransportNumber" :duration="1800" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
+      <div class="card-panel" @click="go('transport')">
         <svg class="card-panel-icon icon-money" aria-hidden="true">
           <use xlink:href="#icondingdan-ing"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            待发货订单
+            装车中
           </div>
-          <count-to :start-val="0" :end-val="allData.ingOrder" :duration="1200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.transport1" :duration="1200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
-        <svg class="card-panel-icon icon-money" aria-hidden="true">
+      <div class="card-panel" @click="go('transport')">
+        <svg class="card-panel-icon icon-shopping" aria-hidden="true">
           <use xlink:href="#icondingdan-ing"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            已发货订单
+            发车
           </div>
-          <count-to :start-val="0" :end-val="allData.alreadyOrder" :duration="1200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.transport2" :duration="800" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
+      <div class="card-panel" @click="go('transport')">
         <svg class="card-panel-icon icon-shopping" aria-hidden="true">
-          <use xlink:href="#icondingdan-end"></use>
+          <use xlink:href="#icondingdan-ing"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            结束订单
+            运输中
           </div>
-          <count-to :start-val="0" :end-val="allData.endOrder" :duration="800" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.transport3" :duration="800" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
+      <div class="card-panel" @click="go('transport')">
         <svg class="card-panel-icon icon-shopping" aria-hidden="true">
-          <use xlink:href="#icondingdan-reject"></use>
+          <use xlink:href="#icondingdan-ing"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            退货订单
+            收货
           </div>
-          <count-to :start-val="0" :end-val="allData.rejectOrder" :duration="800" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.transport4" :duration="800" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="go('order')">
+      <div class="card-panel" @click="go('transport')">
         <svg class="card-panel-icon icon-shopping" aria-hidden="true">
-          <use xlink:href="#icondingdan-error"></use>
+          <use xlink:href="#icondingdan-ing"></use>
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            错误订单
+            返回
           </div>
-          <count-to :start-val="0" :end-val="allData.errorOrder" :duration="800" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="allData.transport5" :duration="800" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -110,6 +110,9 @@
         }
         if(type == 'car'){
           this.$router.push('/car')
+        }
+        if(type == 'transport'){
+          this.$router.push('/transport')
         }
       }
     }

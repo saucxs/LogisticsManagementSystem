@@ -42,7 +42,8 @@
     },
     computed: {
       ...mapGetters([
-        'systemName'
+        'systemName',
+        'userInfo'
       ])
     },
     mounted () {
@@ -72,7 +73,16 @@
               localStorage.setItem("LogisticsManagementSystemUserInfo", JSON.stringify(res.userInfo));
               this.$store.commit('USER_INFO', res.userInfo)
               this.$message.success(res.message|| '登陆成功');
-              this.$router.push({ path: '/home' });
+              if(this.userInfo.role == 1 || this.userInfo.role == 2){
+                let redirect = decodeURIComponent(this.$route.query.redirect || '/home');
+                this.$router.push({ path: redirect });
+              }else if(this.userInfo.role == 3 || this.userInfo.role == 4){
+                let redirect = decodeURIComponent(this.$route.query.redirect || '/manage/transport');
+                this.$router.push({ path: redirect });
+              }else{
+                let redirect = decodeURIComponent(this.$route.query.redirect || '/order/query');
+                this.$router.push({ path: redirect });
+              }
             }else{
               this.$message.warning(res.message|| '服务开小差');
             }

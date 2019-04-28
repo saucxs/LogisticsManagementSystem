@@ -123,7 +123,12 @@ export default {
     return service.post("/deleteOrder", params)
   },
   /*运输任务*/
-  /* 获取任务单列表 - get */
+  /* 分类数据运输单 - get */
+  categoryTransport: (params) => {
+    let data = { params: params };
+    return service.get("/categoryTransport", data)
+  },
+  /* 获取运输单列表 - get */
   getTransportList: (params) => {
     let data = { params: params };
     return service.get("/transportList", data)
@@ -185,6 +190,18 @@ export default {
   /* 删除人员 post */
   deleteTeam: (params) => {
     return service.post("/deleteTeam", params)
+  },
+  /*获取人员的select项*/
+  getTeamListMap: (params) => {
+    let data = { params: params };
+    return service.get("/teamListMap", data)
+  },
+
+
+  /*用户查询*/
+  getPersonalTransportList: (params) => {
+    let data = { params: params };
+    return service.get("/personTransportList", data)
   },
   /**
    * API demo

@@ -199,5 +199,11 @@
   .danger-color{
     color: #F56C6C;
   }
+  .info-color{
+    color: #909399;
+  }
+  .common-color{
+    color: #409EFF;
+  }
 
 </style>

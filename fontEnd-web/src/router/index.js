@@ -11,6 +11,8 @@ import order from '@/views/order'
 import car from '@/views/car'
 import transport from '@/views/transport'
 import orderCollect from '@/views/orderCollect'
+import transportCollect from '@/views/transportCollect'
+import transportUser from '@/views/transportUser'
 
 Vue.use(Router)
 
@@ -30,7 +32,7 @@ const router = new Router({
       component: register,
       meta: {
         zhName: '注册',
-        key: '0'
+        key: '1'
       }
     },
     {
@@ -38,7 +40,7 @@ const router = new Router({
       component: activate,
       meta: {
         zhName: '激活',
-        key: '0'
+        key: '2'
       }
     },
     {
@@ -47,8 +49,8 @@ const router = new Router({
       isNest: false,
       meta: {
         zhName: '概览',
-        key: '1',
-        role: 3
+        key: '3',
+        role: 2
       },
       component: layout,
       children: [{
@@ -57,8 +59,8 @@ const router = new Router({
         icon: 'el-icon-view',
         meta: {
           zhName: '概览',
-          key: '1-1',
-          role: 3
+          key: '3-1',
+          role: 2
         },
         component: home
       }]
@@ -69,8 +71,8 @@ const router = new Router({
       isNest: false,
       meta: {
         zhName: '订单统计',
-        key: '1-10',
-        role: 3
+        key: '4',
+        role: 2
       },
       component: layout,
       children: [{
@@ -79,10 +81,32 @@ const router = new Router({
         icon: 'el-icon-goods',
         meta: {
           zhName: '订单统计',
-          key: '1-11',
-          role: 3
+          key: '4-1',
+          role: 2
         },
         component: orderCollect
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '运输单统计',
+        key: '5',
+        role: 4
+      },
+      component: layout,
+      children: [{
+        path: '/manage/transport',
+        name: 'home',
+        icon: 'el-icon-tickets',
+        meta: {
+          zhName: '运输单统计',
+          key: '5-1',
+          role: 4
+        },
+        component: transportCollect
       }]
     },
     {
@@ -91,8 +115,8 @@ const router = new Router({
       isNest: true,
       meta: {
         zhName: '管理员管理',
-        key: '2',
-        role: 3
+        key: '6',
+        role: 2
       },
       component: layout,
       children: [{
@@ -101,8 +125,8 @@ const router = new Router({
         icon: 'el-icon-view',
         meta: {
           zhName: '订单管理',
-          key: '2-1',
-          role: 3
+          key: '6-1',
+          role: 2
         },
         component: order
       },{
@@ -112,7 +136,7 @@ const router = new Router({
         meta: {
           zhName: '运输任务管理',
           key: '2-2',
-          role: 3
+          role: 2
         },
         component: transport
       },{
@@ -121,8 +145,8 @@ const router = new Router({
         icon: 'el-icon-view',
         meta: {
           zhName: '仓库管理',
-          key: '2-3',
-          role: 3
+          key: '6-2',
+          role: 2
         },
         component: store
       },{
@@ -131,8 +155,8 @@ const router = new Router({
         icon: 'el-icon-view',
         meta: {
           zhName: '人员管理',
-          key: '2-4',
-          role: 3
+          key: '6-3',
+          role: 2
         },
         component: team
       },{
@@ -141,10 +165,54 @@ const router = new Router({
         icon: 'el-icon-view',
         meta: {
           zhName: '车辆管理',
-          key: '2-5',
-          role: 3
+          key: '6-4',
+          role: 2
         },
         component: car
+      }]
+    },
+    {
+      path: '/transport',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '运输单申请',
+        key: '7',
+        role: 4
+      },
+      component: layout,
+      children: [{
+        path: '/transport/apply',
+        name: 'transport',
+        icon: 'el-icon-edit-outline',
+        meta: {
+          zhName: '运输单申请',
+          key: '7-1',
+          role: 4
+        },
+        component: transport
+      }]
+    },
+    {
+      path: '/order',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '订单状态查询',
+        key: '8',
+        role: 5
+      },
+      component: layout,
+      children: [{
+        path: '/order/query',
+        name: 'transport',
+        icon: 'el-icon-search',
+        meta: {
+          zhName: '订单状态查询',
+          key: '8-1',
+          role: 5
+        },
+        component: transportUser
       }]
     }
   ]

@@ -43,6 +43,7 @@
           <span v-if="scope.row.order_status === 2" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 5" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -69,7 +70,7 @@
         width="150">
         <template slot-scope="scope">
           <el-button @click="operatorOrder('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button :disabled="userInfo.role !== 1" @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -152,10 +153,11 @@
     },
     filters:{
       orderStateFilter(val){
-        if(val === 1) return '进行'
+        if(val === 1) return '待发货'
         if(val === 2) return '结束'
         if(val === 3) return '退货'
         if(val === 4) return '错误'
+        if(val === 5) return '已发货'
         else return '-'
       }
     },

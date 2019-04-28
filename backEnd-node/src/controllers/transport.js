@@ -11,11 +11,14 @@ let getTransportList = async (ctx, next) => {
     let page =  Number(ctx.query.currentPage || 1),
         pageNum = Number(ctx.query.pageSize || 10),
 		role = ctx.query.operator_role,
+        name = String(ctx.query.operator_name),
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum;
-	const RowDataPacket = await transportModel.getTransportListPagination(role,content,pageIndex,pageNum),
+    console.log(name, '------------------------------------')
+	const RowDataPacket = await transportModel.getTransportListPagination(role,content, name, pageIndex,pageNum),
         transportList = JSON.parse(JSON.stringify(RowDataPacket));
-	const RowDataPacketTotal = await transportModel.getTransportListTotal(role,content),
+    console.log(transportList,'******************************')
+	const RowDataPacketTotal = await transportModel.getTransportListTotal(role,content, name),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
 
     ctx.body = {
@@ -26,6 +29,7 @@ let getTransportList = async (ctx, next) => {
         }
     };
 };
+
 
 /**
  *  新增运输单
@@ -41,6 +45,7 @@ let addTransport = async (ctx, next) => {
             params.transport_id,
             params.transport_state || 1,
             toNomalTime(params.transport_time),
+            toNomalTime(params.transport_time).substring(0,10),
             params.order_id,
             params.transport_path,
             params.car_code,
@@ -58,6 +63,9 @@ let addTransport = async (ctx, next) => {
                 }
             }
         })
+        /*修改订单状态到已发货*/
+        await orderModel.updateOrderState([5, params.order_id])
+
 	}else if(params.type === 'edit' && params.transport_id){
 	    if(params.transport_state == 4){
             await orderModel.updateOrderState([2, params.order_id])
