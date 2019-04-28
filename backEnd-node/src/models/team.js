@@ -44,10 +44,47 @@ let deleteTeam = function (value) {
     return query(sql, value)
 }
 
+/*获取人员列表select */
+let getTeamListMap = function (role) {
+    let sql;
+    // sql = `SELECT car_code, car_name FROM car_list WHERE operator_role = ${role} and is_show = 1 and car_state = 1 ORDER BY car_time DESC`
+    sql = `SELECT id, name FROM user_info WHERE is_show = 1 and role>=3 and role<=4  ORDER BY activateDate DESC`
+    return query(sql, [role])
+}
+
+/*用户获取个人订单信息 */
+let getPersonalListPagination = function (role, name, content, pageIndex, pageNum) {
+    let sql;
+    if(content){
+        console.log('1234567890*****************************')
+        sql = `SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_id, tl.transport_state, tl.transport_time  FROM order_list as ol, transport_list as tl WHERE ol.order_id = tl.order_id and ol.order_receiver_name = "${name}" and ol.is_show = 1 AND ol.order_id like "%${content}%" ORDER BY ol.order_time DESC LIMIT ${pageIndex},${pageNum}`
+        return query(sql, [content, name, pageIndex, pageNum ])
+    }else{
+        sql = "SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_id, tl.transport_state, tl.transport_time FROM order_list as ol, transport_list as tl WHERE ol.order_id = tl.order_id and ol.order_receiver_name = ? and ol.is_show = 1 ORDER BY ol.order_time DESC LIMIT ?,?"
+        return query(sql, [name, pageIndex, pageNum ])
+    }
+}
+
+
+/*用户获取个人订单信息 - 总数 */
+let getPersonalListTotal = function (role, name, content) {
+    if(content) {
+        console.log('-------------------------------------------')
+        let sql = `SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_state, tl.transport_time  FROM order_list as ol, transport_list as tl where ol.order_id = tl.order_id and ol.order_receiver_name = "${name}" and ol.is_show = 1 and ol.order_id like "%${content}%"`
+        return query(sql, [role, name, content])
+    }else{
+        let sql = "SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_state, tl.transport_time  FROM order_list as ol, transport_list as tl where ol.order_id = tl.order_id and ol.order_receiver_name = ? and ol.is_show = 1"
+        return query(sql, [name])
+    }
+}
+
 module.exports = {
     getTeamListPagination,
     getTeamListTotal,
     addNewStore,
     editNewTeam,
-    deleteTeam
+    deleteTeam,
+    getTeamListMap,
+    getPersonalListPagination,
+    getPersonalListTotal,
 }

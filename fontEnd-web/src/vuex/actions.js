@@ -71,6 +71,13 @@ export const getTransportList = ({ commit }, params) => {
   })
 }
 
+// transport category
+export const categoryTransport = ({ commit }, params) => {
+  return Api.categoryTransport(params).then(response => {
+    return response;
+  })
+}
+
 // add transport
 export const addTransport = ({ commit }, params) => {
   return Api.addTransport(params).then(response => {
@@ -151,6 +158,21 @@ export const addTeam = ({ commit }, params) => {
 // delete team
 export const deleteTeam = ({ commit }, params) => {
   return Api.deleteTeam(params).then(response => {
+    return response;
+  })
+}
+
+// delete team
+export const getTeamListMap = ({ commit }, params) => {
+  return Api.getTeamListMap(params).then(response => {
+    return response;
+  })
+}
+
+
+/*用户查询*/
+export const getPersonalTransportList = ({ commit }, params) => {
+  return Api.getPersonalTransportList(params).then(response => {
     return response;
   })
 }

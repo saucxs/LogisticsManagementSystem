@@ -70,7 +70,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ allOrder, ingOrder, endOrder,alreadyOrder } = {}) {
+    setOptions({ allTransport, transport1, transport2,transport3,transport4,transport5 } = {}) {
       this.chart.setOption({
         xAxis: {
           data: [ getDay(-6),  getDay(-5),  getDay(-4),  getDay(-3),  getDay(-2),  getDay(-1), getDay(0)],
@@ -99,26 +99,26 @@ export default {
           }
         },
         legend: {
-          data: ['所有订单', '待发货', '已发货','结束']
+          data: ['所有运输单', '装车中','发车','运输中', '收货','返回']
         },
         series: [{
-          name: '所有订单', itemStyle: {
+          name: '所有运输单', itemStyle: {
             normal: {
-              color: '#67C23A',
+              color: '#f46217',
               lineStyle: {
-                color: '#67C23A',
+                color: '#f46217',
                 width: 2
               }
             }
           },
           smooth: true,
           type: 'line',
-          data: allOrder,
+          data: allTransport,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: '待发货',
+          name: '装车中',
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -133,32 +133,12 @@ export default {
               }
             }
           },
-          data: ingOrder,
+          data: transport1,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         },
           {
-            name: '已发货',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#E6A23C',
-                lineStyle: {
-                  color: '#E6A23C',
-                  width: 2
-                },
-                areaStyle: {
-                  color: '#f3f8ff'
-                }
-              }
-            },
-            data: alreadyOrder,
-            animationDuration: 2800,
-            animationEasing: 'quadraticOut'
-          },
-          {
-            name: '结束', itemStyle: {
+            name: '发车', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -169,7 +149,52 @@ export default {
           },
             smooth: true,
             type: 'line',
-            data: endOrder,
+            data: transport2,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },{
+            name: '运输中', itemStyle: {
+              normal: {
+                color: '#E6A23C',
+                lineStyle: {
+                  color: '#E6A23C',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: transport3,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },{
+            name: '收货', itemStyle: {
+              normal: {
+                color: '#67C23A',
+                lineStyle: {
+                  color: '#67C23A',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: transport4,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },{
+            name: '返回', itemStyle: {
+              normal: {
+                color: '#909399',
+                lineStyle: {
+                  color: '#909399',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: transport5,
             animationDuration: 2800,
             animationEasing: 'cubicInOut'
           }]

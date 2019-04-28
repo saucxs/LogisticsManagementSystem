@@ -15,7 +15,8 @@ let getCarListPagination = function (role, content, pageIndex, pageNum) {
 /*获取汽车列表select */
 let getCarListMap = function (role) {
     let sql;
-    sql = `SELECT car_code, car_name FROM car_list WHERE operator_role = ${role} and is_show = 1 and car_state = 1 ORDER BY car_time DESC`
+    // sql = `SELECT car_code, car_name FROM car_list WHERE operator_role = ${role} and is_show = 1 and car_state = 1 ORDER BY car_time DESC`
+    sql = `SELECT car_code, car_name FROM car_list WHERE is_show = 1 and car_state = 1 ORDER BY car_time DESC`
     return query(sql, [role])
 }
 

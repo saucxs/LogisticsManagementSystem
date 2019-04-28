@@ -62,7 +62,7 @@
         width="150">
         <template slot-scope="scope">
           <el-button @click="operatorCar('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button @click="deleteCarItem(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button :disabled="userInfo.role !== 1" @click="deleteCarItem(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

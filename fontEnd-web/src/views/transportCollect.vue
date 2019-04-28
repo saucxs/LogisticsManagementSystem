@@ -1,17 +1,17 @@
 <template>
   <div class="write-weekly">
-    <div class="title">订单统计</div>
-    <order-group :category="personCategory" :allData="allData"/>
+    <div class="title">运输单统计</div>
+    <transport-group :allData="allData"/>
     <el-row>
       <el-col :span="14">
         <!--线形图-->
-        <div class="title">最近一周订单数量</div>
+        <div class="title">最近一周运输单数量</div>
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-          <line-chart :chart-data="lineChartData"/>
+          <line-transport :chart-data="lineChartData"/>
         </el-row>
       </el-col>
       <el-col :span="10">
-        <div class="title">订单状态分布</div>
+        <div class="title">运输单状态分布</div>
         <div id="echartss" style="height: 350px;width: 95%;"></div>
       </el-col>
     </el-row>
@@ -22,14 +22,14 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import OrderGroup from '../components/OrderGroup'
-  import LineChart from '../components/LineChart'
+  import TransportGroup from '../components/TransportGroup'
+  import LineTransport from '../components/LineTransport'
   import echarts from 'echarts'
 
   export default {
     components: {
-      OrderGroup,
-      LineChart,
+      TransportGroup,
+      LineTransport,
     },
     data(){
       return {
@@ -52,7 +52,7 @@
         },
         dataList: [],
         dataListCar: [],
-        dataListOrder: [],
+        dataListTransport: [],
         lineChartData: {}
       }
     },
@@ -70,8 +70,16 @@
     methods: {
       ...mapActions([
         "getUserInfo",
-        "categoryOrder"
+        "categoryTransport"
       ]),
+      transportStateFilter(val){
+        if(val === 1) return '装车中'
+        if(val === 2) return '发车'
+        if(val === 3) return '运输中'
+        if(val === 4) return '收货'
+        if(val === 5) return '返回'
+        else return '-'
+      },
       roleFilter(val) {
         if (val === 1) return '管理员'
         if (val === 2) return '仓库管理员'
@@ -87,11 +95,10 @@
         else return '-'
       },
       orderStateFilter(val){
-        if(val === 1) return '待发货'
-        if(val === 2) return '结束'
-        if(val === 3) return '退货'
-        if(val === 4) return '错误'
-        if(val === 5) return '已发货'
+        if(val === 1) return '进行订单'
+        if(val === 2) return '结束订单'
+        if(val === 3) return '退货订单'
+        if(val === 4) return '错误订单'
         else return '-'
       },
       drawPhoto(myChart, data){
@@ -126,30 +133,32 @@
           name: this.userInfo.name,
           role: this.userInfo.role
         }
-        this.categoryOrder(params).then(res => {
+        this.categoryTransport(params).then(res => {
           // console.log(res, 'res')
           if(res.success){
-            this.dataListOrder = res.data.orderNumber.map((item) => {
+            this.dataListTransport = res.data.transportNumber.map((item) => {
               return {
-                name: this.orderStateFilter(item.order_status),
-                value: item.orderNumber
+                name: this.transportStateFilter(item.transport_state),
+                value: item.transportNumber
               }
             })
-            res.data.ingOrder=0,res.data.alreadyOrder=0,res.data.endOrder=0,res.data.rejectOrder=0,res.data.errorOrder=0;
-           for(let i=0,length=res.data.orderNumber.length;i<length;i++){
-             if(res.data.orderNumber[i].order_status === 1){res.data.ingOrder=res.data.orderNumber[i].orderNumber};
-             if(res.data.orderNumber[i].order_status === 5){res.data.alreadyOrder=res.data.orderNumber[i].orderNumber};
-             if(res.data.orderNumber[i].order_status === 2){res.data.endOrder=res.data.orderNumber[i].orderNumber};
-             if(res.data.orderNumber[i].order_status === 3){res.data.rejectOrder=res.data.orderNumber[i].orderNumber};
-             if(res.data.orderNumber[i].order_status === 4){res.data.errorOrder=res.data.orderNumber[i].orderNumber}
+            res.data.transport1=0,res.data.transport2=0,res.data.transport3=0,res.data.transport4=0,res.data.transport5=0;
+           for(let i=0,length=res.data.transportNumber.length;i<length;i++){
+             if(res.data.transportNumber[i].transport_state === 1){res.data.transport1=res.data.transportNumber[i].transportNumber};
+             if(res.data.transportNumber[i].transport_state === 2){res.data.transport2=res.data.transportNumber[i].transportNumber};
+             if(res.data.transportNumber[i].transport_state === 3){res.data.transport3=res.data.transportNumber[i].transportNumber};
+             if(res.data.transportNumber[i].transport_state === 4){res.data.transport4=res.data.transportNumber[i].transportNumber}
+             if(res.data.transportNumber[i].transport_state === 5){res.data.transport5=res.data.transportNumber[i].transportNumber}
            }
             let myChart = echarts.init(document.getElementById('echartss'));
-            this.drawPhoto(myChart, this.dataListOrder);
+            this.drawPhoto(myChart, this.dataListTransport);
             this.lineChartData = {
-              allOrder: res.data.categoryAllOrderNumber,
-              endOrder: res.data.categoryEndOrderNumber,
-              ingOrder: res.data.categoryIngOrderNumber,
-              alreadyOrder: res.data.categoryAlreadyOrderNumber
+              allTransport: res.data.categoryAllTransportNumber,
+              transport1: res.data.categoryTransport1Number,
+              transport2: res.data.categoryTransport2Number,
+              transport3: res.data.categoryTransport3Number,
+              transport4: res.data.categoryTransport4Number,
+              transport5: res.data.categoryTransport5Number,
             };
             // console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;

@@ -1,4 +1,5 @@
 const orderModel = require("../models/order");
+const transportModel = require("../models/transport");
 const {randomString,toNomalTime} = require('../utils/common');
 
 /**
@@ -7,13 +8,13 @@ const {randomString,toNomalTime} = require('../utils/common');
  * @return
  */
 let getOrderList = async (ctx, next) => {
-    console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
+    // console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
     let page =  Number(ctx.query.currentPage || 1),
         pageNum = Number(ctx.query.pageSize || 10),
 		role = ctx.query.operator_role,
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum;
-    console.log(pageIndex,pageNum, '333333333333333333333333')
+    // console.log(pageIndex,pageNum, '333333333333333333333333')
 	const RowDataPacket = await orderModel.getOrderListPagination(role,content,pageIndex,pageNum),
 		orderList = JSON.parse(JSON.stringify(RowDataPacket));
     console.log('12')
@@ -57,12 +58,10 @@ let getOrderListMap = async (ctx, next) => {
 
 let addOrder = async (ctx, next) => {
     let params = ctx.request.body;
-    console.log(params, '888888888888888888888888888888888888')
-    console.log(params.type, params.order_id, '99999999999999999999999999999999999999999999999999')
 	if(params.type === 'add'){
         /*生成含有时间戳的订单ID*/
-        params.order_id = randomString(6) + "_" + ctx.request.body.order_time;
-        orderModel.addNewOrder([
+        params.order_id = randomString(6) + "_" + params.order_time;
+        await orderModel.addNewOrder([
             params.order_id,
             params.order_name,
             params.order_goods,
@@ -76,11 +75,44 @@ let addOrder = async (ctx, next) => {
             params.remark,
             1,
             1
-        ]);
-        ctx.body = {
-            success: true,
-            message: "订单ID为"+ params.order_id +"添加成功"
-        }
+        ]).then(res => {
+            if(res){
+                ctx.body = {
+                    success: true,
+                    message: "订单ID为"+ params.order_id +"添加成功"
+                }
+            }
+        })
+        setTimeout(function() {
+            transportModel.queryTransport(params.order_id).then(res => {
+                console.log(res, '-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-')
+                if(res.length == 0){
+                    params.transport_id = randomString(2) + "_" + params.order_time;
+                    params.transport_path = '';
+                    params.car_code = '';
+                    params.car_driver = '';
+                    params.car_escort = '';
+                    params.remark = '';
+                    transportModel.addNewTransport([
+                        params.transport_id,
+                        params.transport_state || 1,
+                        toNomalTime(params.order_time + 3000),
+                        toNomalTime(params.order_time + 3000).substring(0,10),
+                        params.order_id,
+                        params.transport_path,
+                        params.car_code,
+                        params.car_driver,
+                        params.car_escort,
+                        params.operator_role,
+                        params.operator_name,
+                        params.remark,
+                        1
+                    ])
+                    /*修改订单状态到已发货*/
+                    orderModel.updateOrderState([5, params.order_id])
+                }
+            })
+        }, 90*1000, params);
 	}else if(params.type === 'edit' && params.order_id){
         await orderModel.editNewOrder(
             params.order_name,
@@ -95,9 +127,7 @@ let addOrder = async (ctx, next) => {
             params.order_id,
             params.id,
         ).then(res => {
-            console.log(res, '09090909090909090')
             if (res) {
-                console.log('1111111111111111111111111111')
                 ctx.body = {
                     success: true,
                     message: "订单ID为："+ params.order_id +"修改成功"
@@ -110,7 +140,6 @@ let addOrder = async (ctx, next) => {
 /*删除订单*/
 let deleteOrder = async (ctx, next) => {
     let params = ctx.request.body;
-    console.log(params.order_id, '2222222222222222222222222')
     let order_id = params.order_id;
     await orderModel.deleteOrder([0, order_id]).then(res => {
         if(res){

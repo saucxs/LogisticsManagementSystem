@@ -1,6 +1,6 @@
 <template>
   <div class="transport-list">
-    <div class="title">运输任务管理</div>
+    <div class="title">订单状态查询</div>
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
         <el-col :span="16">
@@ -15,11 +15,42 @@
         </div>
       </el-col>
     </el-row>
-    <p class="tip-p">提醒：可以根据运输单ID，订单ID，汽车编号，模糊查询</p>
+    <p class="tip-p">提醒：可以根据运订单ID，模糊查询</p>
     <el-table
       :data="transportTableData"
       border
       style="width: 100%">
+      <el-table-column
+        prop="order_id"
+        label="订单ID"
+        width="110">
+      </el-table-column>
+      <el-table-column
+        prop="order_name"
+        label="订单名称"
+        width="110">
+      </el-table-column>
+      <el-table-column
+        label="订单状态"
+        width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.order_status === 1" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 2" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 5" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="order_time"
+        label="订单时间"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="order_receiver_phone"
+        label="收货人手机号"
+        width="120">
+      </el-table-column>
       <el-table-column
         prop="transport_id"
         label="任务ID"
@@ -42,35 +73,8 @@
         width="100">
       </el-table-column>
       <el-table-column
-        prop="order_id"
-        label="订单ID"
-        width="110">
-      </el-table-column>
-      <el-table-column
-        prop="transport_path"
-        label="线路">
-      </el-table-column>
-      <el-table-column
-        prop="car_code"
-        label="车辆编号"
-        width="100">
-      </el-table-column>
-      <el-table-column
-        label="司机"
-        width="100">
-        <template slot-scope="scope">
-          {{scope.row.car_driver}}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="car_escort"
-        label="押运员"
-        width="100">
-      </el-table-column>
-      <el-table-column
         prop="remark"
-        label="备注"
-        width="100">
+        label="备注">
       </el-table-column>
       <el-table-column
         label="操作"
@@ -90,82 +94,6 @@
         :total="transportListTotal">
       </el-pagination>
     </div>
-    <!--dialog-->
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="confirmCreateVisiable"
-      :before-close="handleClose"
-      width="600px"
-      center>
-      <div>
-        <el-form label-position="right" label-width="90px" :model="formTransport">
-          <el-form-item label="订单名称">
-            <el-select :disabled="dialogTitle == '修改运输单'" v-model="formTransport.order_id" filterable placeholder="请选择订单名称">
-              <el-option
-                v-for="item in orderOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="订单ID：">
-            <span>{{formTransport.order_id}}</span>
-          </el-form-item>
-          <el-form-item label="运输状态：" v-if="dialogTitle == '修改运输单'">
-            <el-radio :disabled="disableNum>1" v-model="formTransport.transport_state" label="1">装车中</el-radio>
-            <el-radio :disabled="disableNum>2" v-model="formTransport.transport_state" label="2">发车</el-radio>
-            <el-radio :disabled="disableNum>3" v-model="formTransport.transport_state" label="3">运输中</el-radio>
-            <el-radio :disabled="disableNum>4" v-model="formTransport.transport_state" label="4">收货</el-radio>
-            <el-radio :disabled="disableNum>5" v-model="formTransport.transport_state" label="5">返回</el-radio>
-          </el-form-item>
-          <el-form-item label="运输单路线">
-            <el-input type="textarea" :rows="2" v-model="formTransport.transport_path" maxlength="60"></el-input>
-          </el-form-item>
-          <el-form-item label="汽车编码">
-            <el-select v-model="formTransport.car_code" filterable placeholder="请选择汽车名称">
-              <el-option
-                v-for="item in carOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <!--<el-input v-model="formTransport.car_code" maxlength="10"></el-input>-->
-          </el-form-item>
-          <el-form-item label="司机">
-            <el-select v-model="formTransport.car_driver" filterable placeholder="请选择汽车名称">
-              <el-option
-                v-for="item in teamOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <!--<el-input v-model="formTransport.car_driver" maxlength="10"></el-input>-->
-          </el-form-item>
-          <el-form-item label="押运员">
-            <el-select v-model="formTransport.car_escort" filterable placeholder="请选择汽车名称">
-              <el-option
-                v-for="item in teamOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <!--<el-input v-model="formTransport.car_escort" maxlength="10"></el-input>-->
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model="formTransport.remark" maxlength="30"></el-input>
-          </el-form-item>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-          <el-button @click="handleClose()">取 消</el-button>
-          <el-button v-if="dialogTitle == '添加运输单'" type="primary" :loading="loadingFlag" @click="successConfirm('add')">确 定</el-button>
-          <el-button v-if="dialogTitle == '修改运输单'" type="primary" :loading="loadingFlag" @click="successConfirm('edit')">确 定</el-button>
-        </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -211,6 +139,14 @@
         if(val === 5) return '返回'
         else return '-'
       },
+      orderStateFilter(val){
+        if(val === 1) return '待发货'
+        if(val === 2) return '结束'
+        if(val === 3) return '退货'
+        if(val === 4) return '错误'
+        if(val === 5) return '已发货'
+        else return '-'
+      },
       teamMapFilter(value){
         console.log(value, '-=-=-=-=-=-=-')
         let result = this.teamMap[value]
@@ -219,7 +155,7 @@
       },
     },
     mounted(){
-      this.transportList(1,10);
+      this.personalTransportList(1,10);
     },
     computed: {
       ...mapGetters([
@@ -228,7 +164,7 @@
     },
     methods: {
       ...mapActions([
-        "getTransportList",
+        "getPersonalTransportList",
         "addTransport",
         "deleteTransport",
         "getOrderListMap",
@@ -236,20 +172,20 @@
         "getTeamListMap"
       ]),
       handleCurrentChange(currentPage) {
-        this.transportList(currentPage,10)
+        this.personalTransportList(currentPage,10)
       },
       search(){
-        this.transportList(1,10);
+        this.personalTransportList(1,10);
       },
       clear(){
-        this.transportList(1,10);
+        this.personalTransportList(1,10);
       },
       handleClose(){
         this.confirmCreateVisiable = false;
         this.formTransport = {};
-        this.transportList(1,10);
+        this.personalTransportList(1,10);
       },
-      transportList(currentPage, pageSize){
+      personalTransportList(currentPage, pageSize){
         let params = {
           operator_role: this.userInfo.role,
           operator_name: this.userInfo.name,
@@ -257,9 +193,9 @@
           currentPage: currentPage,
           pageSize: pageSize
         }
-        this.getTransportList(params).then(res => {
+        this.getPersonalTransportList(params).then(res => {
           if(res.success){
-            this.transportTableData = res.data.transportList;
+            this.transportTableData = res.data.teamList;
             this.transportListTotal = res.data.total;
             this.currentPage = currentPage;
           }
@@ -326,7 +262,7 @@
           console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
-            this.transportList(this.currentPage,10);
+            this.personalTransportList(this.currentPage,10);
           }else{
             this.$message.warning(res.message|| '服务开小差');
           }
@@ -361,9 +297,9 @@
 
 <style lang="postcss" scoped>
   .transport-list{
-    & .button-style{
-        text-align: right;
-        margin-bottom: 10px;
-      }
+  & .button-style{
+      text-align: right;
+      margin-bottom: 10px;
+    }
   }
 </style>
