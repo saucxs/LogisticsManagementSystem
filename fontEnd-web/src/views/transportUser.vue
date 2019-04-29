@@ -9,11 +9,6 @@
           </el-input>
         </el-col>
       </el-col>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-        <div class="button-style">
-          <el-button type="primary" @click="operatorOrder('add')">添加运输任务</el-button>
-        </div>
-      </el-col>
     </el-row>
     <p class="tip-p">提醒：可以根据运订单ID，模糊查询</p>
     <el-table
@@ -23,7 +18,7 @@
       <el-table-column
         prop="order_id"
         label="订单ID"
-        width="110">
+        width="200">
       </el-table-column>
       <el-table-column
         prop="order_name"
@@ -39,6 +34,7 @@
           <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 5" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 6" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -54,12 +50,13 @@
       <el-table-column
         prop="transport_id"
         label="任务ID"
-        width="100">
+        width="180">
       </el-table-column>
       <el-table-column
         label="任务状态"
         width="80">
         <template slot-scope="scope">
+          <span class="common-color" v-if="scope.row.transport_state === 0">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="common-color" v-if="scope.row.transport_state === 1">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="danger-color" v-if="scope.row.transport_state === 2">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="warning-color" v-if="scope.row.transport_state === 3">{{scope.row.transport_state | transportStateFilter}}</span>
@@ -76,14 +73,6 @@
         prop="remark"
         label="备注">
       </el-table-column>
-      <el-table-column
-        label="操作"
-        width="150">
-        <template slot-scope="scope">
-          <el-button @click="operatorOrder('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button :disabled="userInfo.role !== 1" @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <div class="pagination-box" v-if="transportTableData.length>0">
       <el-pagination
@@ -99,6 +88,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import {filterOrder,filteTransport,filteTeam,filteCar} from '../utils/common'
   export default {
     data(){
       return {
@@ -132,20 +122,10 @@
     },
     filters: {
       transportStateFilter(val){
-        if(val === 1) return '装车中'
-        if(val === 2) return '发车'
-        if(val === 3) return '运输中'
-        if(val === 4) return '收货'
-        if(val === 5) return '返回'
-        else return '-'
+       return filteTransport(val)
       },
       orderStateFilter(val){
-        if(val === 1) return '待发货'
-        if(val === 2) return '结束'
-        if(val === 3) return '退货'
-        if(val === 4) return '错误'
-        if(val === 5) return '已发货'
-        else return '-'
+        return filterOrder(val)
       },
       teamMapFilter(value){
         let result = this.teamMap[value]

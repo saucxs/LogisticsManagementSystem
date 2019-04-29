@@ -61,7 +61,7 @@ let addTransport = async (ctx, next) => {
                 }
             }
         })
-        /*修改订单状态到已发货*/
+        /*修改订单状态到 生成运输单 */
         await orderModel.updateOrderState([5, params.order_id])
 
 	}else if(params.type === 'edit' && params.transport_id){

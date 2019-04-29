@@ -74,6 +74,13 @@ let getCategoryOrder = async (ctx, next) => {
         endParams.push(tempDataRow[0].orderNumber);
     };
 
+    /*生成运输单*/
+    let transportParams = [];
+    for(let i=-6;i<=0;i++){
+        let tempData = await homeModel.getOrderDateStatus(role,getDay(i),6);
+        let tempDataRow = JSON.parse(JSON.stringify(tempData));
+        transportParams.push(tempDataRow[0].orderNumber);
+    };
     /*已发货*/
     let alreadyParams = [];
     for(let i=-6;i<=0;i++){
@@ -89,6 +96,7 @@ let getCategoryOrder = async (ctx, next) => {
             categoryAllOrderNumber: allParams,
             categoryIngOrderNumber: ingParams,
             categoryAlreadyOrderNumber: alreadyParams,
+            categoryTransportOrderNumber: transportParams,
             categoryEndOrderNumber: endParams
         }
     };
@@ -111,6 +119,13 @@ let getCategoryTransport = async (ctx, next) => {
         allParams.push(tempDataRow[0].transportNumber);
     };
 
+    /*拣货中运输单*/
+    let params0 = [];
+    for(let i=-6;i<=0;i++){
+        let tempData = await homeModel.getTransportDateStatus(role,name,getDay(i),0);
+        let tempDataRow = JSON.parse(JSON.stringify(tempData));
+        params0.push(tempDataRow[0].transportNumber);
+    };
     /*装车中运输单*/
     let params1 = [];
     for(let i=-6;i<=0;i++){
@@ -156,6 +171,7 @@ let getCategoryTransport = async (ctx, next) => {
             allTransportNumber: personAllTransportRow[0].allTransportNumber,
             transportNumber: personTransportRow,
             categoryAllTransportNumber: allParams,
+            categoryTransport0Number: params0,
             categoryTransport1Number: params1,
             categoryTransport2Number: params2,
             categoryTransport3Number: params3,

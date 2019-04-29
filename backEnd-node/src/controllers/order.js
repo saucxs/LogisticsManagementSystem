@@ -90,8 +90,8 @@ let addOrder = async (ctx, next) => {
                     transportModel.addNewTransport([
                         params.transport_id,
                         params.transport_state || 0,
-                        toNomalTime(params.order_time + 3000),
-                        toNomalTime(params.order_time + 3000).substring(0,10),
+                        toNomalTime(params.order_time + 60*1000),
+                        toNomalTime(params.order_time + 60*1000).substring(0,10),
                         params.order_id,
                         params.transport_path,
                         params.car_code,
@@ -102,8 +102,8 @@ let addOrder = async (ctx, next) => {
                         params.remark,
                         1
                     ])
-                    /*修改订单状态到已发货*/
-                    // orderModel.updateOrderState([5, params.order_id])
+                    /*修改订单状态到 生成运输单 */
+                    orderModel.updateOrderState([6, params.order_id])
                 }
             })
         }, 60*1000, params);

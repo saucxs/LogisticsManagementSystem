@@ -44,6 +44,7 @@
           <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 5" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 6" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -123,6 +124,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import {filterOrder} from'../utils/common'
   export default {
     data(){
       return {
@@ -153,12 +155,7 @@
     },
     filters:{
       orderStateFilter(val){
-        if(val === 1) return '待发货'
-        if(val === 2) return '结束'
-        if(val === 3) return '退货'
-        if(val === 4) return '错误'
-        if(val === 5) return '已发货'
-        else return '-'
+        return filterOrder(val);
       }
     },
     computed: {

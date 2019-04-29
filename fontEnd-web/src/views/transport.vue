@@ -173,6 +173,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import {filteTransport} from '../utils/common'
   export default {
     data(){
       return {
@@ -206,13 +207,7 @@
     },
     filters: {
       transportStateFilter(val){
-        if(val === 0) return '拣货中'
-        if(val === 1) return '装车中'
-        if(val === 2) return '发车'
-        if(val === 3) return '运输中'
-        if(val === 4) return '收货'
-        if(val === 5) return '返回'
-        else return '-'
+        return filteTransport(val);
       },
       teamMapFilter(value){
         let result = this.teamMap[value]
