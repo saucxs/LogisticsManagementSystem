@@ -82,7 +82,6 @@ let addStore = async (ctx, next) => {
 /*删除订单*/
 let deleteStore = async (ctx, next) => {
     let params = ctx.request.body;
-    console.log(params.id, '2222222222222222222222222')
     let id = params.id;
     await storeModel.deleteStore([0, id]).then(res => {
         if(res){

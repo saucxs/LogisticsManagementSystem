@@ -134,7 +134,6 @@
           role: this.userInfo.role
         }
         this.categoryTransport(params).then(res => {
-          // console.log(res, 'res')
           if(res.success){
             this.dataListTransport = res.data.transportNumber.map((item) => {
               return {
@@ -160,7 +159,6 @@
               transport4: res.data.categoryTransport4Number,
               transport5: res.data.categoryTransport5Number,
             };
-            // console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;
           }
         })

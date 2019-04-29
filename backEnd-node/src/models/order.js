@@ -14,7 +14,6 @@ let getOrderListPagination = function (role, content, pageIndex, pageNum) {
 
 /*获取订单列表select */
 let getOrderListMap = function (role) {
-    console.log(role, '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=')
     let sql;
     // sql = `SELECT order_id, order_name FROM order_list WHERE operator_role >= ${role} and is_show = 1 and order_status = 1  ORDER BY order_time DESC`
     sql = `SELECT order_id, order_name FROM order_list WHERE is_show = 1 and order_status = 1  ORDER BY order_time DESC`
@@ -41,21 +40,19 @@ let addNewOrder = function (value) {
 
 /*修改订单*/
 let editNewOrder = function (order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, id) {
-    console.log(order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, '==============================')
+    // console.log(order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, '==============================')
     let sql = "update order_list set order_name = ?, order_goods = ?, order_time = ?, order_receiver_name = ?, order_receiver_phone = ?, order_receiver_address = ?, operator_name = ?, operator_role = ?, remark = ? where order_id = ? AND  id = ?"
     return query(sql, [order_name, order_goods, order_time, order_receiver_name, order_receiver_phone, order_receiver_address, operator_name, operator_role, remark, order_id, id])
 }
 
 /*删除订单*/
 let deleteOrder = function (value) {
-    console.log(value, '-------------------------------')
     let sql = "update order_list set is_show = ? where order_id = ?"
     return query(sql, value)
 }
 
 /*更新订单订单状态*/
 let updateOrderState = function (value) {
-    console.log(value, '-------------------------------')
     let sql = "update order_list set order_status = ? where order_id = ?"
     return query(sql, value)
 }

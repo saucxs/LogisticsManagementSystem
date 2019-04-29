@@ -127,7 +127,6 @@
           role: this.userInfo.role
         }
         this.categoryOrder(params).then(res => {
-          // console.log(res, 'res')
           if(res.success){
             this.dataListOrder = res.data.orderNumber.map((item) => {
               return {
@@ -151,7 +150,6 @@
               ingOrder: res.data.categoryIngOrderNumber,
               alreadyOrder: res.data.categoryAlreadyOrderNumber
             };
-            // console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;
           }
         })

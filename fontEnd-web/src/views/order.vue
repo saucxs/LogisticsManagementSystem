@@ -213,12 +213,10 @@
         }
       },
       deleteOrderItem(item){
-          console.log(item, 'item')
           let param = {
             order_id: item.order_id
           }
           this.deleteOrder(param).then(res => {
-            console.log(res, 'res')
             if(res.success){
               this.$message.success(res.message);
               this.orderList(this.currentPage,10);
@@ -235,7 +233,6 @@
           this.formOrder.order_time = (new Date()).getTime();
           this.formOrder.operator_name = this.userInfo.name;
           this.formOrder.operator_role = this.userInfo.role;
-          console.log(this.formOrder, '-=---------------------------------===========')
           this.addOrder(this.formOrder).then(res => {
             if(res.success){
               this.$message.success(res.message);

@@ -1,48 +1,45 @@
 const {query} = require('../utils/db');
 
 /*获取运输单列表 - 分页 */
-let getTransportListPagination= function (role, content, name, pageIndex, pageNum) {
+let getTransportListPagination= function (role, content, name, state, pageIndex, pageNum) {
     let sql;
     if(content){
-        console.log('0000000000000000000000000000000000000000000000000000000000000999999999999999999999999999999999')
         if(role == 1 || role == 2){
             sql = `SELECT * FROM transport_list WHERE operator_role >= ${role} and is_show = 1 AND CONCAT(transport_id, order_id, car_code) like "%${content}%" ORDER BY transport_time DESC LIMIT ${pageIndex},${pageNum}`
             return query(sql, [role, content, pageIndex, pageNum ])
         }else if(role == 3 || role == 4){
-            sql = `SELECT * FROM transport_list WHERE (car_driver = ${name} or car_escort = ${name}) and is_show = 1 AND CONCAT(transport_id, order_id, car_code) like "%${content}%" ORDER BY transport_time DESC LIMIT ${pageIndex},${pageNum}`
-            return query(sql, [content, name, pageIndex, pageNum ])
+            console.log('676767676767676767')
+            sql = `SELECT * FROM transport_list WHERE (car_driver = "${name}" or car_escort = "${name}" or transport_state = 0) and is_show = 1 AND CONCAT(transport_id, order_id, car_code) like "%${content}%" ORDER BY transport_time DESC LIMIT ${pageIndex},${pageNum}`
+            return query(sql, [content, name, state, pageIndex, pageNum ])
         }
     }else{
         if(role == 1 || role == 2){
             sql = `SELECT * FROM transport_list WHERE operator_role >= ${role} and is_show = 1 ORDER BY transport_time DESC LIMIT ${pageIndex},${pageNum}`
             return query(sql, [role, 1, pageIndex, pageNum ])
         }else if(role == 3 || role == 4){
-            console.log('-=-=-=-=-==-=-=-=-=-=-=')
-            sql = "SELECT * FROM transport_list WHERE (car_driver = ? or car_escort = ?) and is_show = 1 ORDER BY transport_time DESC LIMIT ?,?"
-            return query(sql, [ name, name, pageIndex, pageNum ])
+            sql = "SELECT * FROM transport_list WHERE (car_driver = ? or car_escort = ? or transport_state = ?) and is_show = 1 ORDER BY transport_time DESC LIMIT ?,?"
+            return query(sql, [ name, name, 0, pageIndex, pageNum ])
         }
     }
 }
 
 /*获取运输单列表 - 总数 */
-let getTransportListTotal= function (role, content, name) {
+let getTransportListTotal= function (role, content, name, state) {
     if(content) {
-        // console.log('1111111111111111111111111111122222222222222222222222222222222222222222222222222222222')
         if(role == 1 || role == 2){
             let sql = `SELECT * from transport_list where operator_role >= ${role} and is_show = 1 and CONCAT(transport_id, order_id, car_code) like "%${content}%"`
             return query(sql, [role, content])
         }else if(role == 3 || role == 4){
-            let sql = `SELECT * from transport_list where (car_driver = ${name} or car_escort = ${name}) and is_show = 1 and CONCAT(transport_id, order_id, car_code) like "%${content}%"`
-            return query(sql, [role, name, content])
+            let sql = `SELECT * from transport_list where (car_driver = "${name}" or car_escort = "${name}" or transport_state = 0) and is_show = 1 and CONCAT(transport_id, order_id, car_code) like "%${content}%"`
+            return query(sql, [role, name, state, content])
         }
     }else{
         if(role == 1 || role == 2){
             let sql = `SELECT * from transport_list where operator_role >= ${role} and is_show = 1`
             return query(sql, [role, 1])
         }else if(role == 3 || role == 4){
-            console.log('0909090909090909090909090909')
-            let sql = "SELECT * from transport_list where (car_driver = ? or car_escort = ?) and is_show = ?"
-            return query(sql, [name, name, 1])
+            let sql = "SELECT * from transport_list where (car_driver = ? or car_escort = ? or transport_state = ?) and is_show = ?"
+            return query(sql, [name, name,0, 1])
         }
     }
 }

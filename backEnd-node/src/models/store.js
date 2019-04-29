@@ -39,7 +39,6 @@ let editNewStore= function (store_code, store_name, store_address, store_time, s
 
 /*删除仓库*/
 let deleteStore= function (value) {
-    console.log(value, '-------------------------------')
     let sql = "update store_list set is_show = ? where id = ?"
     return query(sql, value)
 }

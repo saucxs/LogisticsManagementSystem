@@ -29,6 +29,7 @@
         label="任务状态"
         width="80">
         <template slot-scope="scope">
+          <span class="common-color" v-if="scope.row.transport_state === 0">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="common-color" v-if="scope.row.transport_state === 1">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="danger-color" v-if="scope.row.transport_state === 2">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="warning-color" v-if="scope.row.transport_state === 3">{{scope.row.transport_state | transportStateFilter}}</span>
@@ -95,7 +96,7 @@
       :title="dialogTitle"
       :visible.sync="confirmCreateVisiable"
       :before-close="handleClose"
-      width="600px"
+      width="700px"
       center>
       <div>
         <el-form label-position="right" label-width="90px" :model="formTransport">
@@ -113,6 +114,7 @@
             <span>{{formTransport.order_id}}</span>
           </el-form-item>
           <el-form-item label="运输状态：" v-if="dialogTitle == '修改运输单'">
+            <el-radio :disabled="disableNum>0" v-model="formTransport.transport_state" label="0">拣货中</el-radio>
             <el-radio :disabled="disableNum>1" v-model="formTransport.transport_state" label="1">装车中</el-radio>
             <el-radio :disabled="disableNum>2" v-model="formTransport.transport_state" label="2">发车</el-radio>
             <el-radio :disabled="disableNum>3" v-model="formTransport.transport_state" label="3">运输中</el-radio>
@@ -204,6 +206,7 @@
     },
     filters: {
       transportStateFilter(val){
+        if(val === 0) return '拣货中'
         if(val === 1) return '装车中'
         if(val === 2) return '发车'
         if(val === 3) return '运输中'
@@ -212,9 +215,7 @@
         else return '-'
       },
       teamMapFilter(value){
-        console.log(value, '-=-=-=-=-=-=-')
         let result = this.teamMap[value]
-        console.log(result, '000000000000')
         return result;
       },
     },
@@ -309,7 +310,6 @@
           this.dialogTitle = '添加运输单';
           this.confirmCreateVisiable = true;
         }else if(type == 'edit'){
-          console.log(item, '-=-=-=-=-=-=-=-=-=')
           this.dialogTitle = '修改运输单';
           this.confirmCreateVisiable = true;
           this.disableNum = Number(item.transport_state);
@@ -318,12 +318,10 @@
         }
       },
       deleteOrderItem(item){
-        console.log(item, 'item')
         let param = {
           transport_id: item.transport_id
         }
         this.deleteTransport(param).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
             this.transportList(this.currentPage,10);
@@ -341,7 +339,6 @@
           this.formTransport.transport_time = (new Date()).getTime();
           this.formTransport.operator_name = this.userInfo.name;
           this.formTransport.operator_role = this.userInfo.role;
-          console.log(this.formTransport, '-=---------------------------------===========')
           this.addTransport(this.formTransport).then(res => {
             if(res.success){
               this.$message.success(res.message);

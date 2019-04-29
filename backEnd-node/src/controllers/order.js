@@ -8,20 +8,15 @@ const {randomString,toNomalTime} = require('../utils/common');
  * @return
  */
 let getOrderList = async (ctx, next) => {
-    // console.log(ctx.query.currentPage, ctx.query.pageSize, '2222222222222222222222222')
     let page =  Number(ctx.query.currentPage || 1),
         pageNum = Number(ctx.query.pageSize || 10),
 		role = ctx.query.operator_role,
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum;
-    // console.log(pageIndex,pageNum, '333333333333333333333333')
 	const RowDataPacket = await orderModel.getOrderListPagination(role,content,pageIndex,pageNum),
 		orderList = JSON.parse(JSON.stringify(RowDataPacket));
-    console.log('12')
-	// console.log(orderList, '444444444444444444444444444')
 	const RowDataPacketTotal = await orderModel.getOrderListTotal(role,content),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
-    // console.log(total, '555555555555555555555')
 	ctx.body = {
 		success: true,
 		data: {
@@ -85,7 +80,6 @@ let addOrder = async (ctx, next) => {
         })
         setTimeout(function() {
             transportModel.queryTransport(params.order_id).then(res => {
-                console.log(res, '-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-')
                 if(res.length == 0){
                     params.transport_id = randomString(2) + "_" + params.order_time;
                     params.transport_path = '';
@@ -95,7 +89,7 @@ let addOrder = async (ctx, next) => {
                     params.remark = '';
                     transportModel.addNewTransport([
                         params.transport_id,
-                        params.transport_state || 1,
+                        params.transport_state || 0,
                         toNomalTime(params.order_time + 3000),
                         toNomalTime(params.order_time + 3000).substring(0,10),
                         params.order_id,
@@ -109,10 +103,10 @@ let addOrder = async (ctx, next) => {
                         1
                     ])
                     /*修改订单状态到已发货*/
-                    orderModel.updateOrderState([5, params.order_id])
+                    // orderModel.updateOrderState([5, params.order_id])
                 }
             })
-        }, 90*1000, params);
+        }, 60*1000, params);
 	}else if(params.type === 'edit' && params.order_id){
         await orderModel.editNewOrder(
             params.order_name,

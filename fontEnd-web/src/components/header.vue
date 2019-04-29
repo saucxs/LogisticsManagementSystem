@@ -3,11 +3,16 @@
     <div class="header-box">
       <el-row type="flex" justify="center">
         <el-col :span="12">
-          <div class="header-logo">
-            {{systemName}}
+          <div class="header-box-left" @click="goHome()" :title="systemName">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconsubmitordersdelive-copy"></use>
+            </svg>
+            <div class="header-logo">
+              {{systemName}}
+            </div>
           </div>
         </el-col>
-        <el-col :span="11">
+        <el-col :span="12">
           <el-row type="flex" justify="end">
             <el-dropdown>
               <div class="header-user-name">{{userInfo.name}}<i class="el-icon-caret-bottom el-icon--right"></i></div>
@@ -43,6 +48,15 @@
        ...mapActions([
 
        ]),
+       goHome() {
+         if(this.userInfo.role == 1 || this.userInfo.role == 2){
+           this.$router.push({ path:  '/home' });
+         }else if(this.userInfo.role == 3 || this.userInfo.role == 4){
+           this.$router.push({ path: '/manage/transport' });
+         }else{
+           this.$router.push({ path: '/order/query' });
+         }
+       },
        signOut() {
          this.$confirm('确认退出系统吗？', '提示', {
            confirmButtonText: '确定',

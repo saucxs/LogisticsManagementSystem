@@ -32,14 +32,12 @@ let addNewStore = function (value) {
 
 /*修改人员*/
 let editNewTeam = function (role, operator_time, operator_name, operator_role, id) {
-    console.log(role, operator_time, operator_name, operator_role, id, '==============================')
     let sql = "update user_info set role = ?, operator_time = ?, operator_name = ?, operator_role = ? where id = ?"
     return query(sql, [role, operator_time, operator_name, operator_role, id])
 }
 
 /*删除人员*/
 let deleteTeam = function (value) {
-    console.log(value, '-------------------------------')
     let sql = "update user_info set is_show = ? where id = ?"
     return query(sql, value)
 }
@@ -56,7 +54,6 @@ let getTeamListMap = function (role) {
 let getPersonalListPagination = function (role, name, content, pageIndex, pageNum) {
     let sql;
     if(content){
-        console.log('1234567890*****************************')
         sql = `SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_id, tl.transport_state, tl.transport_time  FROM order_list as ol, transport_list as tl WHERE ol.order_id = tl.order_id and ol.order_receiver_name = "${name}" and ol.is_show = 1 AND ol.order_id like "%${content}%" ORDER BY ol.order_time DESC LIMIT ${pageIndex},${pageNum}`
         return query(sql, [content, name, pageIndex, pageNum ])
     }else{
@@ -69,7 +66,6 @@ let getPersonalListPagination = function (role, name, content, pageIndex, pageNu
 /*用户获取个人订单信息 - 总数 */
 let getPersonalListTotal = function (role, name, content) {
     if(content) {
-        console.log('-------------------------------------------')
         let sql = `SELECT ol.order_id, ol.order_name, ol.order_time, ol.order_status, ol.order_receiver_name, ol.order_receiver_phone, tl.transport_state, tl.transport_time  FROM order_list as ol, transport_list as tl where ol.order_id = tl.order_id and ol.order_receiver_name = "${name}" and ol.is_show = 1 and ol.order_id like "%${content}%"`
         return query(sql, [role, name, content])
     }else{

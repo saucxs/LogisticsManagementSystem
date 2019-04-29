@@ -1,7 +1,14 @@
 <template>
   <div id="register">
     <div class="loginHeader">
-      <h1>{{systemName}}</h1>
+      <div class="header-box-left" :title="systemName">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#iconsubmitordersdelive-black"></use>
+        </svg>
+        <div class="header-logo">
+          {{systemName}}
+        </div>
+      </div>
     </div>
     <div class="login_contenter">
       <div class="content_box">
@@ -103,7 +110,20 @@
   .loginHeader {
     height: 60px;
     line-height: 60px;
-    /*padding: 14px 0 14px 10%;*/
+    color: #000000;
+  }
+  .loginHeader .header-box-left{
+    justify-content: center;
+    float: none !important;
+    font-size: 24px !important;
+    cursor: inherit !important;
+  }
+  .loginHeader .icon{
+    width: 2.0em;
+    height: 2.0em;
+  }
+  .loginHeader .header-logo{
+    letter-spacing: 16px;
   }
   .active{
     color: #5579ee;

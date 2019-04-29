@@ -14,11 +14,9 @@ let getTransportList = async (ctx, next) => {
         name = String(ctx.query.operator_name),
 		content = ctx.query.searchContent;
     let pageIndex = (page - 1) * pageNum;
-    console.log(name, '------------------------------------')
-	const RowDataPacket = await transportModel.getTransportListPagination(role,content, name, pageIndex,pageNum),
+	const RowDataPacket = await transportModel.getTransportListPagination(role,content, name, 0, pageIndex,pageNum),
         transportList = JSON.parse(JSON.stringify(RowDataPacket));
-    console.log(transportList,'******************************')
-	const RowDataPacketTotal = await transportModel.getTransportListTotal(role,content, name),
+	const RowDataPacketTotal = await transportModel.getTransportListTotal(role,content, name, 0),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
 
     ctx.body = {
@@ -67,7 +65,9 @@ let addTransport = async (ctx, next) => {
         await orderModel.updateOrderState([5, params.order_id])
 
 	}else if(params.type === 'edit' && params.transport_id){
-	    if(params.transport_state == 4){
+        if(params.transport_state >= 1 && params.transport_state < 4){
+            await orderModel.updateOrderState([5, params.order_id])
+        }else if(params.transport_state>=4 && params.transport_state<=5){
             await orderModel.updateOrderState([2, params.order_id])
         }
         await transportModel.editNewTransport(
@@ -96,7 +96,6 @@ let addTransport = async (ctx, next) => {
 /*删除订单*/
 let deleteTransport = async (ctx, next) => {
     let params = ctx.request.body;
-    console.log(params.transport_id, '2222222222222222222222222')
     let transport_id = params.transport_id;
     await transportModel.deleteTransport([0, transport_id]).then(res => {
         if(res){

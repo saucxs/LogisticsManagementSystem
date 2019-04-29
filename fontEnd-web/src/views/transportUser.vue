@@ -148,9 +148,7 @@
         else return '-'
       },
       teamMapFilter(value){
-        console.log(value, '-=-=-=-=-=-=-')
         let result = this.teamMap[value]
-        console.log(result, '000000000000')
         return result;
       },
     },
@@ -245,7 +243,6 @@
           this.dialogTitle = '添加运输单';
           this.confirmCreateVisiable = true;
         }else if(type == 'edit'){
-          console.log(item, '-=-=-=-=-=-=-=-=-=')
           this.dialogTitle = '修改运输单';
           this.confirmCreateVisiable = true;
           this.disableNum = Number(item.transport_state);
@@ -254,12 +251,10 @@
         }
       },
       deleteOrderItem(item){
-        console.log(item, 'item')
         let param = {
           transport_id: item.transport_id
         }
         this.deleteTransport(param).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
             this.personalTransportList(this.currentPage,10);
@@ -277,7 +272,6 @@
           this.formTransport.transport_time = (new Date()).getTime();
           this.formTransport.operator_name = this.userInfo.name;
           this.formTransport.operator_role = this.userInfo.role;
-          console.log(this.formTransport, '-=---------------------------------===========')
           this.addTransport(this.formTransport).then(res => {
             if(res.success){
               this.$message.success(res.message);

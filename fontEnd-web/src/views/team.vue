@@ -183,12 +183,10 @@
         }
       },
       deleteTeamItem(item){
-        console.log(item, 'item')
         let param = {
           id: item.id
         }
         this.deleteTeam(param).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
             this.teamList(this.currentPage,10);

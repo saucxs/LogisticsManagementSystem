@@ -81,8 +81,6 @@ let getCategoryOrder = async (ctx, next) => {
         let tempDataRow = JSON.parse(JSON.stringify(tempData));
         alreadyParams.push(tempDataRow[0].orderNumber);
     };
-
-    console.log(allParams, '-=-=-=-=--=-=-=-=090909090909090');
     ctx.body = {
         success: true,
         data: {
@@ -110,7 +108,6 @@ let getCategoryTransport = async (ctx, next) => {
     for(let i=-6;i<=0;i++){
         let tempData = await homeModel.getTransportDate(role,name,getDay(i));
         let tempDataRow = JSON.parse(JSON.stringify(tempData));
-        console.log(tempDataRow,'0000000000000000000000000000000000000')
         allParams.push(tempDataRow[0].transportNumber);
     };
 
@@ -153,9 +150,6 @@ let getCategoryTransport = async (ctx, next) => {
         let tempDataRow = JSON.parse(JSON.stringify(tempData));
         params5.push(tempDataRow[0].transportNumber);
     };
-
-
-    console.log(allParams, '-=-=-=-=--=-=-=-=090909090909090');
     ctx.body = {
         success: true,
         data: {

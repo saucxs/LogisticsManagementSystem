@@ -111,7 +111,6 @@
           role: this.userInfo.role
         }
         this.categoryData(params).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.dataList = res.data.categoryPerson.map((item) => {
              return {
