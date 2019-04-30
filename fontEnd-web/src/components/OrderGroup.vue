@@ -20,7 +20,20 @@
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            待发货订单
+            生成任务单
+          </div>
+          <count-to :start-val="0" :end-val="allData.transportOrder" :duration="1200" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="go('order')">
+        <svg class="card-panel-icon icon-money" aria-hidden="true">
+          <use xlink:href="#icondingdan-ing"></use>
+        </svg>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            待发货
           </div>
           <count-to :start-val="0" :end-val="allData.ingOrder" :duration="1200" class="card-panel-num" />
         </div>
@@ -33,7 +46,7 @@
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            已发货订单
+            已发货
           </div>
           <count-to :start-val="0" :end-val="allData.alreadyOrder" :duration="1200" class="card-panel-num" />
         </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="write-weekly">
     <div class="title">订单统计</div>
-    <order-group :category="personCategory" :allData="allData"/>
+    <order-group :allData="allData"/>
     <el-row>
       <el-col :span="14">
         <!--线形图-->
