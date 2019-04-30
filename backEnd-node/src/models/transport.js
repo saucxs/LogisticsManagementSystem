@@ -52,10 +52,10 @@ let addNewTransport= function (value) {
 
 
 /*修改运输单*/
-let editNewTransport= function (transport_state, transport_time, transport_path, car_code, car_driver, car_escort, operator_role, operator_name, remark, transport_id, id) {
+let editNewTransport= function (transport_state, transport_time, transport_path, store_code, car_code, car_driver, car_escort, operator_role, operator_name, remark, transport_id, id) {
     // console.log(transport_state, transport_time, transport_path, car_code, car_driver, car_escort, operator_role, operator_name, remark, transport_id, id, '==============================')
-    let sql = "update transport_list set transport_state = ?, transport_time = ?, transport_path = ?, car_code = ?, car_driver = ?, car_escort = ?, operator_role = ?, operator_name = ?, remark = ? where transport_id = ? AND  id = ?"
-    return query(sql, [transport_state, transport_time, transport_path, car_code, car_driver, car_escort, operator_role, operator_name, remark, transport_id, id])
+    let sql = "update transport_list set transport_state = ?, transport_time = ?, transport_path = ?, store_code = ?, car_code = ?, car_driver = ?, car_escort = ?, operator_role = ?, operator_name = ?, remark = ? where transport_id = ? AND  id = ?"
+    return query(sql, [transport_state, transport_time, transport_path, store_code, car_code, car_driver, car_escort, operator_role, operator_name, remark, transport_id, id])
 }
 
 /*删除运输单*/

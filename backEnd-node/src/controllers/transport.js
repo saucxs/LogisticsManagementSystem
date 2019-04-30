@@ -75,6 +75,7 @@ let addTransport = async (ctx, next) => {
             params.transport_state,
             toNomalTime(params.transport_time),
             params.transport_path,
+            params.store_code,
             params.car_code,
             params.car_driver,
             params.car_escort,
