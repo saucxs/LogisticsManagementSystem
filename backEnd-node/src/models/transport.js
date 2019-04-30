@@ -46,7 +46,7 @@ let getTransportListTotal= function (role, content, name, state) {
 
 /*添加运输单*/
 let addNewTransport= function (value) {
-    let sql = "insert into transport_list(transport_id, transport_state, transport_time, transport_date, order_id, transport_path, car_code, car_driver, car_escort, operator_role, operator_name, remark, is_show) values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    let sql = "insert into transport_list(transport_id, transport_state, transport_time, transport_date, order_id, transport_path, store_code, car_code, car_driver, car_escort, operator_role, operator_name, remark, is_show) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     return query(sql, value)
 }
 

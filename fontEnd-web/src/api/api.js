@@ -156,6 +156,11 @@ export default {
   deleteStore: (params) => {
     return service.post("/deleteStore", params)
   },
+  /*获取仓库的select项*/
+  getStoreListMap: (params) => {
+    let data = { params: params };
+    return service.get("/storeListMap", data)
+  },
 
   /*车辆*/
   /* 获取汽车列表 - get */

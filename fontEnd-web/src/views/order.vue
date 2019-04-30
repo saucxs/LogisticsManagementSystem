@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column
         label="订单状态"
-        width="80">
+        width="95">
         <template slot-scope="scope">
           <span v-if="scope.row.order_status === 1" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 2" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>

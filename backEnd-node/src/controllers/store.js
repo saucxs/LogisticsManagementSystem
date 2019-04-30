@@ -94,9 +94,27 @@ let deleteStore = async (ctx, next) => {
     })
 }
 
+/**
+ *  获取仓库的select项
+ * @param
+ * @return
+ */
+let getStoreListMap = async (ctx, next) => {
+    let role = ctx.query.operator_role;
+    const RowDataPacket = await storeModel.getStoreListMap(role),
+        storeListMap = JSON.parse(JSON.stringify(RowDataPacket));
+    ctx.body = {
+        success: true,
+        data: {
+            storeListMap: storeListMap
+        }
+    };
+};
+
 
 module.exports = {
 	getStoreList,
     addStore,
-    deleteStore
+    deleteStore,
+    getStoreListMap
 };

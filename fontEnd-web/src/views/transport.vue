@@ -45,11 +45,16 @@
       <el-table-column
         prop="order_id"
         label="订单ID"
-        width="110">
+        width="115">
       </el-table-column>
       <el-table-column
         prop="transport_path"
         label="线路">
+      </el-table-column>
+      <el-table-column
+        prop="store_code"
+        label="仓库编号"
+        width="100">
       </el-table-column>
       <el-table-column
         prop="car_code"
@@ -58,7 +63,7 @@
       </el-table-column>
       <el-table-column
         label="司机"
-        width="100">
+        width="70">
         <template slot-scope="scope">
           {{scope.row.car_driver}}
         </template>
@@ -66,12 +71,12 @@
       <el-table-column
         prop="car_escort"
         label="押运员"
-        width="100">
+        width="80">
       </el-table-column>
       <el-table-column
         prop="remark"
         label="备注"
-        width="100">
+        width="80">
       </el-table-column>
       <el-table-column
         label="操作"
@@ -123,6 +128,17 @@
           </el-form-item>
           <el-form-item label="运输单路线">
             <el-input type="textarea" :rows="2" v-model="formTransport.transport_path" maxlength="60"></el-input>
+          </el-form-item>
+          <el-form-item label="取货仓库">
+            <el-select v-model="formTransport.store_code" filterable placeholder="请选择仓库">
+              <el-option
+                v-for="item in storeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <!--<el-input v-model="formTransport.car_code" maxlength="10"></el-input>-->
           </el-form-item>
           <el-form-item label="汽车编码">
             <el-select v-model="formTransport.car_code" filterable placeholder="请选择汽车名称">
@@ -189,6 +205,7 @@
           transport_time:'',
           order_id: '',
           transport_path: '',
+          store_code: '',
           car_code: '',
           car_driver: '',
           car_escort: '',
@@ -202,7 +219,8 @@
         carOptions: [],
         disableNum: 1,
         teamOptions: [],
-        teamMap: []
+        teamMap: [],
+        storeOptions: []
       }
     },
     filters: {
@@ -229,7 +247,8 @@
         "deleteTransport",
         "getOrderListMap",
         "getCarListMap",
-        "getTeamListMap"
+        "getTeamListMap",
+        "getStoreListMap"
       ]),
       handleCurrentChange(currentPage) {
         this.transportList(currentPage,10)
@@ -297,10 +316,23 @@
           }
         })
       },
+      getStoreListSelect(){
+        this.getStoreListMap({operator_role: this.userInfo.role}).then(res => {
+          if(res.success){
+            this.storeOptions = res.data.storeListMap.map(item => {
+              return {
+                value: item.store_code,
+                label: item.store_name
+              }
+            })
+          }
+        })
+      },
       operatorOrder(type, item){
         this.getOrderListSelect();
         this.getCarListSelect();
         this.getTeamListSelect();
+        this.getStoreListSelect();
         if(type == 'add'){
           this.dialogTitle = '添加运输单';
           this.confirmCreateVisiable = true;
@@ -330,7 +362,6 @@
           this.$message.warning('请输入相应内容')
         }else{
           this.formTransport.type = type;
-          // this.formTransport.transport_state;
           this.formTransport.transport_time = (new Date()).getTime();
           this.formTransport.operator_name = this.userInfo.name;
           this.formTransport.operator_role = this.userInfo.role;

@@ -36,6 +36,7 @@ router.post('/deleteTransport', verify, transport.deleteTransport) //删除运�
 router.get('/storeList', verify, store.getStoreList)// 获取仓库列表
 router.post('/addStore', verify, store.addStore) //添加仓库
 router.post('/deleteStore', verify, store.deleteStore) //删除仓库
+router.get('/storeListMap', verify, store.getStoreListMap)// 获取汽车的select项
 
 router.get('/carList', verify, car.getCarList)// 获取车辆列表
 router.post('/addCar', verify, car.addCar) //添加车辆

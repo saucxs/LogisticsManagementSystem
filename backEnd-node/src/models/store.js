@@ -43,10 +43,17 @@ let deleteStore= function (value) {
     return query(sql, value)
 }
 
+/*获取仓库select*/
+let getStoreListMap= function (role) {
+    let sql = `SELECT store_code, store_name FROM store_list WHERE is_show = 1 ORDER BY store_time DESC`
+    return query(sql, [role])
+}
+
 module.exports = {
     getStoreListPagination,
     getStoreListTotal,
     addNewStore,
     editNewStore,
-    deleteStore
+    deleteStore,
+    getStoreListMap
 }

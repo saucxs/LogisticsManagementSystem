@@ -46,6 +46,7 @@ let addTransport = async (ctx, next) => {
             toNomalTime(params.transport_time).substring(0,10),
             params.order_id,
             params.transport_path,
+            params.store_code,
             params.car_code,
             params.car_driver,
             params.car_escort,
