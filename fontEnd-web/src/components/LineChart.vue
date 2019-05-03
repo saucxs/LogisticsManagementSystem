@@ -70,7 +70,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ allOrder, ingOrder, endOrder,alreadyOrder } = {}) {
+    setOptions({ allOrder, transportOrder, ingOrder, endOrder,alreadyOrder } = {}) {
       this.chart.setOption({
         xAxis: {
           data: [ getDay(-6),  getDay(-5),  getDay(-4),  getDay(-3),  getDay(-2),  getDay(-1), getDay(0)],
@@ -99,7 +99,7 @@ export default {
           }
         },
         legend: {
-          data: ['所有订单', '待发货', '已发货','结束']
+          data: ['所有订单','生成运输单', '待发货', '已发货','结束']
         },
         series: [{
           name: '所有订单', itemStyle: {
@@ -137,6 +137,26 @@ export default {
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         },
+          {
+            name: '生成运输单',
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#5511ee',
+                lineStyle: {
+                  color: '#5511ee',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
+              }
+            },
+            data: transportOrder,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          },
           {
             name: '已发货',
             smooth: true,

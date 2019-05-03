@@ -20,6 +20,19 @@
         </svg>
         <div class="card-panel-description">
           <div class="card-panel-text">
+            拣货中
+          </div>
+          <count-to :start-val="0" :end-val="allData.transport0" :duration="1200" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="go('transport')">
+        <svg class="card-panel-icon icon-money" aria-hidden="true">
+          <use xlink:href="#icondingdan-ing"></use>
+        </svg>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
             装车中
           </div>
           <count-to :start-val="0" :end-val="allData.transport1" :duration="1200" class="card-panel-num" />

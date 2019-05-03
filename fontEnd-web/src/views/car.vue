@@ -225,7 +225,6 @@
           this.formCar.car_time = (new Date()).getTime();
           this.formCar.operator_name = this.userInfo.name;
           this.formCar.operator_role = this.userInfo.role;
-          console.log(this.formCar, '-=---------------------------------===========')
           this.addCar(this.formCar).then(res => {
             if(res.success){
               this.$message.success(res.message);

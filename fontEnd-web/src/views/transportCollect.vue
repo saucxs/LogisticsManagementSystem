@@ -25,7 +25,7 @@
   import TransportGroup from '../components/TransportGroup'
   import LineTransport from '../components/LineTransport'
   import echarts from 'echarts'
-
+  import {filterOrder,filteTransport,filteTeam,filteCar} from '../utils/common'
   export default {
     components: {
       TransportGroup,
@@ -73,33 +73,16 @@
         "categoryTransport"
       ]),
       transportStateFilter(val){
-        if(val === 1) return '装车中'
-        if(val === 2) return '发车'
-        if(val === 3) return '运输中'
-        if(val === 4) return '收货'
-        if(val === 5) return '返回'
-        else return '-'
+        return filteTransport(val);
       },
       roleFilter(val) {
-        if (val === 1) return '管理员'
-        if (val === 2) return '仓库管理员'
-        if (val === 3) return '司机'
-        if (val === 4) return '押运员'
-        if (val === 5) return '用户'
-        else return '-'
+        return filteTeam(val);
       },
       carStateFilter(val){
-        if(val === 1) return '正常'
-        if(val === 2) return '维修'
-        if(val === 3) return '报废'
-        else return '-'
+        return filteCar(val);
       },
       orderStateFilter(val){
-        if(val === 1) return '进行订单'
-        if(val === 2) return '结束订单'
-        if(val === 3) return '退货订单'
-        if(val === 4) return '错误订单'
-        else return '-'
+       return filterOrder(val)
       },
       drawPhoto(myChart, data){
         // 基于准备好的dom，初始化echarts实例
@@ -134,7 +117,6 @@
           role: this.userInfo.role
         }
         this.categoryTransport(params).then(res => {
-          // console.log(res, 'res')
           if(res.success){
             this.dataListTransport = res.data.transportNumber.map((item) => {
               return {
@@ -142,8 +124,9 @@
                 value: item.transportNumber
               }
             })
-            res.data.transport1=0,res.data.transport2=0,res.data.transport3=0,res.data.transport4=0,res.data.transport5=0;
+            res.data.transport0=0,res.data.transport1=0,res.data.transport2=0,res.data.transport3=0,res.data.transport4=0,res.data.transport5=0;
            for(let i=0,length=res.data.transportNumber.length;i<length;i++){
+             if(res.data.transportNumber[i].transport_state === 0){res.data.transport0=res.data.transportNumber[i].transportNumber};
              if(res.data.transportNumber[i].transport_state === 1){res.data.transport1=res.data.transportNumber[i].transportNumber};
              if(res.data.transportNumber[i].transport_state === 2){res.data.transport2=res.data.transportNumber[i].transportNumber};
              if(res.data.transportNumber[i].transport_state === 3){res.data.transport3=res.data.transportNumber[i].transportNumber};
@@ -154,13 +137,13 @@
             this.drawPhoto(myChart, this.dataListTransport);
             this.lineChartData = {
               allTransport: res.data.categoryAllTransportNumber,
+              transport0: res.data.categoryTransport0Number,
               transport1: res.data.categoryTransport1Number,
               transport2: res.data.categoryTransport2Number,
               transport3: res.data.categoryTransport3Number,
               transport4: res.data.categoryTransport4Number,
               transport5: res.data.categoryTransport5Number,
             };
-            // console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;
           }
         })

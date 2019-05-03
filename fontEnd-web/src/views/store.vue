@@ -186,12 +186,10 @@
         }
       },
       deleteStoreItem(item){
-        console.log(item, 'item')
         let param = {
           id: item.id
         }
         this.deleteStore(param).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
             this.storeList(this.currentPage,10);
@@ -208,7 +206,6 @@
           this.formStore.store_time = (new Date()).getTime();
           this.formStore.operator_name = this.userInfo.name;
           this.formStore.operator_role = this.userInfo.role;
-          console.log(this.formStore, '-=---------------------------------===========')
           this.addStore(this.formStore).then(res => {
             if(res.success){
               this.$message.success(res.message);

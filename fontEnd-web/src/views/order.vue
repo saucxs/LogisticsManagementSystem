@@ -37,13 +37,14 @@
       </el-table-column>
       <el-table-column
         label="订单状态"
-        width="80">
+        width="95">
         <template slot-scope="scope">
           <span v-if="scope.row.order_status === 1" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 2" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 3" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 4" class="danger-color">{{scope.row.order_status | orderStateFilter}}</span>
           <span v-if="scope.row.order_status === 5" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
+          <span v-if="scope.row.order_status === 6" class="success-color">{{scope.row.order_status | orderStateFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -123,6 +124,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import {filterOrder} from'../utils/common'
   export default {
     data(){
       return {
@@ -153,12 +155,7 @@
     },
     filters:{
       orderStateFilter(val){
-        if(val === 1) return '待发货'
-        if(val === 2) return '结束'
-        if(val === 3) return '退货'
-        if(val === 4) return '错误'
-        if(val === 5) return '已发货'
-        else return '-'
+        return filterOrder(val);
       }
     },
     computed: {
@@ -213,12 +210,10 @@
         }
       },
       deleteOrderItem(item){
-          console.log(item, 'item')
           let param = {
             order_id: item.order_id
           }
           this.deleteOrder(param).then(res => {
-            console.log(res, 'res')
             if(res.success){
               this.$message.success(res.message);
               this.orderList(this.currentPage,10);
@@ -235,7 +230,6 @@
           this.formOrder.order_time = (new Date()).getTime();
           this.formOrder.operator_name = this.userInfo.name;
           this.formOrder.operator_role = this.userInfo.role;
-          console.log(this.formOrder, '-=---------------------------------===========')
           this.addOrder(this.formOrder).then(res => {
             if(res.success){
               this.$message.success(res.message);

@@ -1,7 +1,7 @@
 <template>
   <div class="write-weekly">
     <div class="title">订单统计</div>
-    <order-group :category="personCategory" :allData="allData"/>
+    <order-group :allData="allData"/>
     <el-row>
       <el-col :span="14">
         <!--线形图-->
@@ -25,7 +25,7 @@
   import OrderGroup from '../components/OrderGroup'
   import LineChart from '../components/LineChart'
   import echarts from 'echarts'
-
+  import {filterOrder,filteTeam,filteCar} from '../utils/common'
   export default {
     components: {
       OrderGroup,
@@ -73,26 +73,13 @@
         "categoryOrder"
       ]),
       roleFilter(val) {
-        if (val === 1) return '管理员'
-        if (val === 2) return '仓库管理员'
-        if (val === 3) return '司机'
-        if (val === 4) return '押运员'
-        if (val === 5) return '用户'
-        else return '-'
+        return filteTeam(val)
       },
       carStateFilter(val){
-        if(val === 1) return '正常'
-        if(val === 2) return '维修'
-        if(val === 3) return '报废'
-        else return '-'
+       return filteCar(val)
       },
       orderStateFilter(val){
-        if(val === 1) return '待发货'
-        if(val === 2) return '结束'
-        if(val === 3) return '退货'
-        if(val === 4) return '错误'
-        if(val === 5) return '已发货'
-        else return '-'
+       return filterOrder(val)
       },
       drawPhoto(myChart, data){
         // 基于准备好的dom，初始化echarts实例
@@ -127,7 +114,6 @@
           role: this.userInfo.role
         }
         this.categoryOrder(params).then(res => {
-          // console.log(res, 'res')
           if(res.success){
             this.dataListOrder = res.data.orderNumber.map((item) => {
               return {
@@ -138,6 +124,7 @@
             res.data.ingOrder=0,res.data.alreadyOrder=0,res.data.endOrder=0,res.data.rejectOrder=0,res.data.errorOrder=0;
            for(let i=0,length=res.data.orderNumber.length;i<length;i++){
              if(res.data.orderNumber[i].order_status === 1){res.data.ingOrder=res.data.orderNumber[i].orderNumber};
+             if(res.data.orderNumber[i].order_status === 6){res.data.transportOrder=res.data.orderNumber[i].orderNumber};
              if(res.data.orderNumber[i].order_status === 5){res.data.alreadyOrder=res.data.orderNumber[i].orderNumber};
              if(res.data.orderNumber[i].order_status === 2){res.data.endOrder=res.data.orderNumber[i].orderNumber};
              if(res.data.orderNumber[i].order_status === 3){res.data.rejectOrder=res.data.orderNumber[i].orderNumber};
@@ -149,9 +136,9 @@
               allOrder: res.data.categoryAllOrderNumber,
               endOrder: res.data.categoryEndOrderNumber,
               ingOrder: res.data.categoryIngOrderNumber,
-              alreadyOrder: res.data.categoryAlreadyOrderNumber
+              alreadyOrder: res.data.categoryAlreadyOrderNumber,
+              transportOrder: res.data.categoryTransportOrderNumber
             };
-            // console.log(this.lineChartData, '09090909090909090')
             this.allData = res.data;
           }
         })

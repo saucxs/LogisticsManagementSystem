@@ -3,7 +3,7 @@ import {
 } from "../mutation-types.js";
 
 const state = {
-  systemName: 'XXX系统',
+  systemName: '物流管理系统',
   userInfo: JSON.parse(localStorage.getItem('LogisticsManagementSystemUserInfo'))
 };
 

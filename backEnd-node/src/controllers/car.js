@@ -57,7 +57,6 @@ let addCar = async (ctx, next) => {
             }
         })
 	}else if(params.type === 'edit' && params.car_code){
-	    console.log(params,'111111111111111111111111111111')
         await carModel.editNewCar(
             params.car_code,
             params.car_name,

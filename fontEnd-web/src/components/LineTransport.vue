@@ -70,7 +70,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ allTransport, transport1, transport2,transport3,transport4,transport5 } = {}) {
+    setOptions({ allTransport, transport0, transport1, transport2,transport3,transport4,transport5 } = {}) {
       this.chart.setOption({
         xAxis: {
           data: [ getDay(-6),  getDay(-5),  getDay(-4),  getDay(-3),  getDay(-2),  getDay(-1), getDay(0)],
@@ -99,7 +99,7 @@ export default {
           }
         },
         legend: {
-          data: ['所有运输单', '装车中','发车','运输中', '收货','返回']
+          data: ['所有运输单','拣货中', '装车中','发车','运输中', '收货','返回']
         },
         series: [{
           name: '所有运输单', itemStyle: {
@@ -117,6 +117,26 @@ export default {
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
+          {
+            name: '拣货中',
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
+                color: '#5511ee',
+                lineStyle: {
+                  color: '#5511ee',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
+              }
+            },
+            data: transport0,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          },
         {
           name: '装车中',
           smooth: true,

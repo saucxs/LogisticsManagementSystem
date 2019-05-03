@@ -29,6 +29,7 @@
         label="任务状态"
         width="80">
         <template slot-scope="scope">
+          <span class="common-color" v-if="scope.row.transport_state === 0">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="common-color" v-if="scope.row.transport_state === 1">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="danger-color" v-if="scope.row.transport_state === 2">{{scope.row.transport_state | transportStateFilter}}</span>
           <span class="warning-color" v-if="scope.row.transport_state === 3">{{scope.row.transport_state | transportStateFilter}}</span>
@@ -44,11 +45,16 @@
       <el-table-column
         prop="order_id"
         label="订单ID"
-        width="110">
+        width="115">
       </el-table-column>
       <el-table-column
         prop="transport_path"
         label="线路">
+      </el-table-column>
+      <el-table-column
+        prop="store_code"
+        label="仓库编号"
+        width="100">
       </el-table-column>
       <el-table-column
         prop="car_code"
@@ -57,7 +63,7 @@
       </el-table-column>
       <el-table-column
         label="司机"
-        width="100">
+        width="70">
         <template slot-scope="scope">
           {{scope.row.car_driver}}
         </template>
@@ -65,12 +71,12 @@
       <el-table-column
         prop="car_escort"
         label="押运员"
-        width="100">
+        width="80">
       </el-table-column>
       <el-table-column
         prop="remark"
         label="备注"
-        width="100">
+        width="80">
       </el-table-column>
       <el-table-column
         label="操作"
@@ -95,7 +101,7 @@
       :title="dialogTitle"
       :visible.sync="confirmCreateVisiable"
       :before-close="handleClose"
-      width="600px"
+      width="700px"
       center>
       <div>
         <el-form label-position="right" label-width="90px" :model="formTransport">
@@ -113,6 +119,7 @@
             <span>{{formTransport.order_id}}</span>
           </el-form-item>
           <el-form-item label="运输状态：" v-if="dialogTitle == '修改运输单'">
+            <el-radio :disabled="disableNum>0" v-model="formTransport.transport_state" label="0">拣货中</el-radio>
             <el-radio :disabled="disableNum>1" v-model="formTransport.transport_state" label="1">装车中</el-radio>
             <el-radio :disabled="disableNum>2" v-model="formTransport.transport_state" label="2">发车</el-radio>
             <el-radio :disabled="disableNum>3" v-model="formTransport.transport_state" label="3">运输中</el-radio>
@@ -121,6 +128,17 @@
           </el-form-item>
           <el-form-item label="运输单路线">
             <el-input type="textarea" :rows="2" v-model="formTransport.transport_path" maxlength="60"></el-input>
+          </el-form-item>
+          <el-form-item label="取货仓库">
+            <el-select v-model="formTransport.store_code" filterable placeholder="请选择仓库">
+              <el-option
+                v-for="item in storeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <!--<el-input v-model="formTransport.car_code" maxlength="10"></el-input>-->
           </el-form-item>
           <el-form-item label="汽车编码">
             <el-select v-model="formTransport.car_code" filterable placeholder="请选择汽车名称">
@@ -171,6 +189,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import {filteTransport} from '../utils/common'
   export default {
     data(){
       return {
@@ -186,6 +205,7 @@
           transport_time:'',
           order_id: '',
           transport_path: '',
+          store_code: '',
           car_code: '',
           car_driver: '',
           car_escort: '',
@@ -199,22 +219,16 @@
         carOptions: [],
         disableNum: 1,
         teamOptions: [],
-        teamMap: []
+        teamMap: [],
+        storeOptions: []
       }
     },
     filters: {
       transportStateFilter(val){
-        if(val === 1) return '装车中'
-        if(val === 2) return '发车'
-        if(val === 3) return '运输中'
-        if(val === 4) return '收货'
-        if(val === 5) return '返回'
-        else return '-'
+        return filteTransport(val);
       },
       teamMapFilter(value){
-        console.log(value, '-=-=-=-=-=-=-')
         let result = this.teamMap[value]
-        console.log(result, '000000000000')
         return result;
       },
     },
@@ -233,7 +247,8 @@
         "deleteTransport",
         "getOrderListMap",
         "getCarListMap",
-        "getTeamListMap"
+        "getTeamListMap",
+        "getStoreListMap"
       ]),
       handleCurrentChange(currentPage) {
         this.transportList(currentPage,10)
@@ -301,15 +316,27 @@
           }
         })
       },
+      getStoreListSelect(){
+        this.getStoreListMap({operator_role: this.userInfo.role}).then(res => {
+          if(res.success){
+            this.storeOptions = res.data.storeListMap.map(item => {
+              return {
+                value: item.store_code,
+                label: item.store_name
+              }
+            })
+          }
+        })
+      },
       operatorOrder(type, item){
         this.getOrderListSelect();
         this.getCarListSelect();
         this.getTeamListSelect();
+        this.getStoreListSelect();
         if(type == 'add'){
           this.dialogTitle = '添加运输单';
           this.confirmCreateVisiable = true;
         }else if(type == 'edit'){
-          console.log(item, '-=-=-=-=-=-=-=-=-=')
           this.dialogTitle = '修改运输单';
           this.confirmCreateVisiable = true;
           this.disableNum = Number(item.transport_state);
@@ -318,12 +345,10 @@
         }
       },
       deleteOrderItem(item){
-        console.log(item, 'item')
         let param = {
           transport_id: item.transport_id
         }
         this.deleteTransport(param).then(res => {
-          console.log(res, 'res')
           if(res.success){
             this.$message.success(res.message);
             this.transportList(this.currentPage,10);
@@ -337,11 +362,9 @@
           this.$message.warning('请输入相应内容')
         }else{
           this.formTransport.type = type;
-          // this.formTransport.transport_state;
           this.formTransport.transport_time = (new Date()).getTime();
           this.formTransport.operator_name = this.userInfo.name;
           this.formTransport.operator_role = this.userInfo.role;
-          console.log(this.formTransport, '-=---------------------------------===========')
           this.addTransport(this.formTransport).then(res => {
             if(res.success){
               this.$message.success(res.message);

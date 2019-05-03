@@ -176,3 +176,10 @@ export const getPersonalTransportList = ({ commit }, params) => {
     return response;
   })
 }
+
+/*查询仓库select*/
+export const getStoreListMap = ({ commit }, params) => {
+  return Api.getStoreListMap(params).then(response => {
+    return response;
+  })
+}

@@ -6,7 +6,6 @@ const mailer = require('../config').mailer;
 const {randomString, toNomalTime, mailTemplate} = require('../utils/common');
 
 let unActivate = async (ctx, next) => {
-    console.log("register");
     let user = {
         name: ctx.request.body.name,
         password: ctx.request.body.password,
@@ -14,7 +13,6 @@ let unActivate = async (ctx, next) => {
     }
     let salt = dbConfig.salt
     await userModel.findDataByName(user.name).then(res => {
-        console.log(res, '结果')
         if(res.length) {
             ctx.body = {
                 success: false,
@@ -77,13 +75,11 @@ let activate = async (ctx, next) => {
         if(res.length) {
             let user = res[0];
             if (user.activate === 1) {
-                console.log(user, '111111111111111111111111111111111111')
                 ctx.body = {
                     success: false,
                     message: "该邮箱"+ user.email +"\r在"+ user.activateDate +"已经激活"
                 }
             } else {
-                console.log(user, '2222222222222222222222222222222')
                 let activateDate = toNomalTime(new Date().getTime())
                 let res = userModel.activateUser(true, activateDate, code);
                 if (res) {

@@ -61,12 +61,6 @@
   .el-tag{
     margin: 5px;
   }
-  /*menu*/
-  /*.el-menu-item {*/
-  /*padding-bottom: 8px;*/
-  /*height: 50px;*/
-  /*line-height: 50px;*/
-  /*}*/
   .el-submenu .el-menu-item{
     min-width: 146px !important;
     padding-left: 50px !important;
@@ -152,22 +146,6 @@
       top: 14px;
     }
   }
-  /*!*滚动条*!*/
-  /**::-webkit-scrollbar {*/
-    /*width: 5px;*/
-    /*height: 5px;*/
-  /*}*/
-
-  /**::-webkit-scrollbar-track {*/
-    /*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);*/
-    /*background-color: #f5f5f5;*/
-  /*}*/
-
-  /**::-webkit-scrollbar-thumb {*/
-    /*border-radius: 10px;*/
-    /*box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);*/
-    /*background-color: #777;*/
-  /*}*/
   /*输入框*/
   *::placeholder {
     font-size: 12px;
@@ -204,6 +182,24 @@
   }
   .common-color{
     color: #409EFF;
+  }
+  .icon {
+    width: 1.5em; height: 1.5em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .header-box-left{
+    display: flex;
+    align-items: center;
+    float: left;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .header-logo{
+    margin-left: 4px;
+    letter-spacing: 10px;
   }
 
 </style>

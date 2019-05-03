@@ -88,3 +88,46 @@ function doHandleMonth(month){
   }
   return m;
 }
+
+
+/*订单状态 转换器*/
+export function filterOrder(val){
+  if(val === 1) return '待发货'
+  if(val === 2) return '结束'
+  if(val === 3) return '退货'
+  if(val === 4) return '错误'
+  if(val === 5) return '已发货'
+  if(val === 6) return '生成运输单'
+  else return '-'
+}
+
+
+/*运输单状态 转换器*/
+export function filteTransport(val){
+  if(val === 0) return '拣货中'
+  if(val === 1) return '装车中'
+  if(val === 2) return '发车'
+  if(val === 3) return '运输中'
+  if(val === 4) return '收货'
+  if(val === 5) return '返回'
+  else return '-'
+}
+
+
+/*人员角色 转换器*/
+export function filteTeam(val){
+  if (val === 1) return '管理员'
+  if (val === 2) return '仓库管理员'
+  if (val === 3) return '司机'
+  if (val === 4) return '押运员'
+  if (val === 5) return '用户'
+  else return '-'
+}
+
+/*车辆状态 转换器*/
+export function filteCar(val){
+  if(val === 1) return '正常'
+  if(val === 2) return '维修'
+  if(val === 3) return '报废'
+  else return '-'
+}
