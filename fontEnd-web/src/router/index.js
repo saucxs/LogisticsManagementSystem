@@ -194,21 +194,21 @@ const router = new Router({
       }]
     },
     {
-      path: '/order',
+      path: '/person',
       name: 'layout',
       isNest: false,
       meta: {
-        zhName: '订单状态查询',
+        zhName: '个人订单查询',
         key: '8',
         role: 5
       },
       component: layout,
       children: [{
-        path: '/order/query',
+        path: '/person/order/query',
         name: 'transport',
         icon: 'el-icon-search',
         meta: {
-          zhName: '订单状态查询',
+          zhName: '个人订单查询',
           key: '8-1',
           role: 5
         },
