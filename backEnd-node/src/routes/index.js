@@ -8,6 +8,7 @@ const home = require('../controllers/home');
 const order = require('../controllers/order');
 const transport = require('../controllers/transport');
 const store = require('../controllers/store');
+const city = require('../controllers/city');
 const car = require('../controllers/car');
 const team = require('../controllers/team');
 
@@ -37,6 +38,7 @@ router.get('/storeList', verify, store.getStoreList)// 获取仓库列表
 router.post('/addStore', verify, store.addStore) //添加仓库
 router.post('/deleteStore', verify, store.deleteStore) //删除仓库
 router.get('/storeListMap', verify, store.getStoreListMap)// 获取汽车的select项
+router.get('/cityListMap', verify, city.getCityListMap)// 获取城市的select项
 
 router.get('/carList', verify, car.getCarList)// 获取车辆列表
 router.post('/addCar', verify, car.addCar) //添加车辆

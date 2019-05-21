@@ -161,6 +161,11 @@ export default {
     let data = { params: params };
     return service.get("/storeListMap", data)
   },
+  /*获取城市的select项*/
+  getCityListMap: (params) => {
+    let data = { params: params };
+    return service.get("/cityListMap", data)
+  },
 
   /*车辆*/
   /* 获取汽车列表 - get */

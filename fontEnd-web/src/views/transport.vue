@@ -126,6 +126,25 @@
             <el-radio :disabled="disableNum>4" v-model="formTransport.transport_state" label="4">收货</el-radio>
             <el-radio :disabled="disableNum>5" v-model="formTransport.transport_state" label="5">返回</el-radio>
           </el-form-item>
+          <el-form-item label="运输地：" v-if="dialogTitle == '添加运输单'">
+            <el-select @change="changePlace" v-model="formTransport.start_city" filterable placeholder="请选择初始地">
+              <el-option
+                v-for="item in cityOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-select @change="changePlace" v-model="formTransport.end_city" filterable placeholder="请选择目的地">
+              <el-option
+                v-for="item in cityOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <!--<el-input v-model="formTransport.car_code" maxlength="10"></el-input>-->
+          </el-form-item>
           <el-form-item label="运输单路线">
             <el-input type="textarea" :rows="2" v-model="formTransport.transport_path" maxlength="60"></el-input>
           </el-form-item>
@@ -204,6 +223,8 @@
           transport_state: '',
           transport_time:'',
           order_id: '',
+          start_city: '',
+          end_city: '',
           transport_path: '',
           store_code: '',
           car_code: '',
@@ -220,7 +241,15 @@
         disableNum: 1,
         teamOptions: [],
         teamMap: [],
-        storeOptions: []
+        storeOptions: [],
+        cityOptions: [],
+        cityPath: ['南京路','一经路','软件大道','天隆寺','九江路','武昌大道','仙鹤门','汉阳路1号街','汉阳路2号街','汉阳路3号街','汉阳路4号街','汉阳路5号街',
+         '湖南路1号街','湖南路2号街','湖南路3号街','湖南路4号街','湖南路4号街','其昌大道','软件四号路','软件三号路','软件二号路','软件一号路','道义南大街',
+          '软件园环路','软件园大道','软件园1号路','软件园2号路','软件园3号路','软件园4号路','软件园5号路','软件园6号路','软件园7号路','软件园8号路','软件园9号路',
+          '司门口','千家街','万松园','三阳路','四美塘','五福路','六角亭','九女敦','六渡桥','一元路','三阳路','双洞门','月亮湾', '龙珠路','陈东路','中山大道',
+          '和平大道','黄埔路','环山东路','黄龙山南路','汉西二路','汉西一路','欢乐大道','淮海路','后湖大道','科技路','康宁路','临江大道','丽景南路', '龙阳大道','建材路','解放大道',
+          '白云路','北洋桥','路北洋桥路北','后街宝','通寺路','八一路','北京路','毕升路','碧波路','宝丰二路','北三区玻璃厂街','百泰路','博雅湖路','板厂街保望堤社区','北二路八古墩','西四巷','八古墩东','四巷八古墩','东三巷','白沙洲大道','博奇路','白沙洲大道高架宝丰二路'],
+        count: 0
       }
     },
     filters: {
@@ -248,7 +277,8 @@
         "getOrderListMap",
         "getCarListMap",
         "getTeamListMap",
-        "getStoreListMap"
+        "getStoreListMap",
+        "getCityListMap"
       ]),
       handleCurrentChange(currentPage) {
         this.transportList(currentPage,10)
@@ -328,11 +358,52 @@
           }
         })
       },
+      getCityListSelect(){
+        this.getCityListMap({operator_role: this.userInfo.role}).then(res => {
+          if(res.success){
+            this.cityOptions = res.data.cityListMap.map(item => {
+              return {
+                value: item.city_code,
+                label: item.city_name
+              }
+            })
+          }
+        })
+      },
+      /*随机生成数字*/
+      range(min, max, num) {
+        return function (n) {
+          var i, value, arr = [];
+          for (i = 0 ; i < n; i++) {
+            value = Math.floor(Math.random()*(max - min + 1) + min);
+            if (arr.indexOf(value) < 0 ) {
+              arr.push(value);
+            } else {
+              i--;
+            }
+          }
+          return arr;
+        };
+      },
+      changePlace(value){
+        this.formTransport.transport_path = '';
+        this.count += 1;
+        if(this.formTransport.start_city && this.formTransport.end_city && (this.count == 2 || this.count == 1)){
+          var fn = this.range(0, this.cityPath.length - 1);
+          var arrayList = fn(6);
+          for(let i =0;i<arrayList.length;i++){
+            this.formTransport.transport_path += this.cityPath[arrayList[i]] + '->'
+          }
+          this.formTransport.transport_path = this.formTransport.transport_path.substring(0, this.formTransport.transport_path.length-2);
+          this.count = 0;
+        }
+      },
       operatorOrder(type, item){
         this.getOrderListSelect();
         this.getCarListSelect();
         this.getTeamListSelect();
         this.getStoreListSelect();
+        this.getCityListSelect();
         if(type == 'add'){
           this.dialogTitle = '添加运输单';
           this.confirmCreateVisiable = true;

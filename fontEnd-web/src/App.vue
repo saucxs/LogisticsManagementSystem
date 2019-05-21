@@ -164,7 +164,6 @@
   }
 
   .loginHeader h1{
-    margin: 0 auto;
     text-align: center;
   }
 

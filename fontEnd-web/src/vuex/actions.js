@@ -183,3 +183,10 @@ export const getStoreListMap = ({ commit }, params) => {
     return response;
   })
 }
+
+/*查询城市select*/
+export const getCityListMap = ({ commit }, params) => {
+  return Api.getCityListMap(params).then(response => {
+    return response;
+  })
+}
