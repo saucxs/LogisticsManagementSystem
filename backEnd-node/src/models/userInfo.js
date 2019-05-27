@@ -6,6 +6,12 @@ let insertUser= function (value) {
     return query(sql, value)
 }
 
+/*写入日志*/
+let insertLoginLog= function (value) {
+    let sql = "insert into log(log_flag, log_activate_flag, log_name, log_password, log_time, log_ip) values(?,?,?,?,?,?)"
+    return query(sql, value)
+}
+
 /*注册用户-激活*/
 let activateUser= function (activate, activateDate, code) {
     let sql = "update user_info SET activate = ?, activateDate = ?, is_show = ? WHERE activateCode = ? "
@@ -38,6 +44,7 @@ let getUserInfo = (user_id) => {
 
 module.exports = {
     insertUser,
+    insertLoginLog,
     activateUser,
     findDataByName,
     findDataByActivateCode,

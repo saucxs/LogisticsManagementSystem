@@ -56,6 +56,16 @@ let addTransport = async (ctx, next) => {
             1
         ]).then(res => {
             if(res){
+                /*写入关系表*/
+                transportModel.insertTransPortRelation([
+                    params.transport_id,
+                    params.order_id,
+                    params.store_code,
+                    params.car_code,
+                    params.car_driver,
+                    params.car_escort,
+                    toNomalTime(params.transport_time)
+                ]);
                 ctx.body = {
                     success: true,
                     message: "运输单ID为"+ params.transport_id +"添加成功"
@@ -86,6 +96,14 @@ let addTransport = async (ctx, next) => {
             params.id,
         ).then(res => {
             if (res) {
+                /*修改关系表*/
+                transportModel.updateTransPortRelation([
+                    params.store_code,
+                    params.car_code,
+                    params.car_driver,
+                    params.car_escort,
+                    params.transport_id,
+                ]);
                 ctx.body = {
                     success: true,
                     message: "运输单ID为："+ params.order_id +"修改成功"

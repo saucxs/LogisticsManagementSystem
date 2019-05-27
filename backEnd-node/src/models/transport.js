@@ -70,6 +70,18 @@ let queryTransport= function (value) {
     return query(sql, [value])
 }
 
+/*新建运输单关系表*/
+let insertTransPortRelation = function(value){
+    let sql = "insert into transport_relation(tr_transport_id, tr_order_id, tr_store_code, tr_car_code, tr_user_driver, tr_user_escort, time) values(?,?,?,?,?,?,?)"
+    return query(sql, value)
+}
+
+/*修改运输单关系表*/
+let updateTransPortRelation = function(value){
+    let sql = "update transport_relation set tr_store_code = ?, tr_car_code = ?, tr_user_driver = ?, tr_user_escort = ? where tr_transport_id = ?"
+    return query(sql, value)
+}
+
 module.exports = {
     getTransportListPagination,
     getTransportListTotal,
@@ -77,5 +89,7 @@ module.exports = {
     editNewTransport,
     deleteTransport,
     queryTransport,
+    insertTransPortRelation,
+    updateTransPortRelation
 }
 
