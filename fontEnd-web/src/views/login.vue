@@ -87,7 +87,7 @@
                 let redirect = decodeURIComponent(this.$route.query.redirect || '/manage/transport');
                 this.$router.push({ path: redirect });
               }else{
-                let redirect = decodeURIComponent(this.$route.query.redirect || '/order/query');
+                let redirect = decodeURIComponent(this.$route.query.redirect || '/person/order/query');
                 this.$router.push({ path: redirect });
               }
             }else{

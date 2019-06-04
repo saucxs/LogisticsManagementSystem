@@ -50,6 +50,134 @@ const router = new Router({
       meta: {
         zhName: '概览',
         key: '3',
+        role: 1
+      },
+      component: layout,
+      children: [{
+        path: '/home',
+        name: 'home',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '概览',
+          key: '3-1',
+          role: 1
+        },
+        component: home
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '订单统计',
+        key: '4',
+        role: 1
+      },
+      component: layout,
+      children: [{
+        path: '/manage/order',
+        name: 'home',
+        icon: 'el-icon-goods',
+        meta: {
+          zhName: '订单统计',
+          key: '4-1',
+          role: 1
+        },
+        component: orderCollect
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '运输单统计',
+        key: '5',
+        role: 1
+      },
+      component: layout,
+      children: [{
+        path: '/manage/transport',
+        name: 'home',
+        icon: 'el-icon-tickets',
+        meta: {
+          zhName: '运输单统计',
+          key: '5-1',
+          role: 1
+        },
+        component: transportCollect
+      }]
+    },
+    {
+      path: '/admin',
+      name: 'layout',
+      isNest: true,
+      meta: {
+        zhName: '管理员管理',
+        key: '6',
+        role: 1
+      },
+      component: layout,
+      children: [{
+        path: '/order',
+        name: 'order',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '订单管理',
+          key: '6-1',
+          role: 1
+        },
+        component: order
+      },{
+        path: '/transport',
+        name: 'transport',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '运输任务管理',
+          key: '2-2',
+          role: 1
+        },
+        component: transport
+      },{
+        path: '/store',
+        name: 'store',
+        icon: 'el-icon-location-outline',
+        meta: {
+          zhName: '仓库管理',
+          key: '6-2',
+          role: 1
+        },
+        component: store
+      },{
+        path: '/team',
+        name: 'team',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '人员管理',
+          key: '6-3',
+          role: 1
+        },
+        component: team
+      },{
+        path: '/car',
+        name: 'car',
+        icon: 'el-icon-view',
+        meta: {
+          zhName: '车辆管理',
+          key: '6-4',
+          role: 1
+        },
+        component: car
+      }]
+    },
+    {
+      path: '/',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '概览',
+        key: '3',
         role: 2
       },
       component: layout,
@@ -70,21 +198,87 @@ const router = new Router({
       name: 'layout',
       isNest: false,
       meta: {
-        zhName: '订单统计',
-        key: '4',
+        zhName: '仓库管理',
+        key: '5-1-1',
         role: 2
       },
       component: layout,
       children: [{
-        path: '/manage/order',
-        name: 'home',
-        icon: 'el-icon-goods',
+        path: '/store',
+        name: 'store',
+        icon: 'el-icon-location-outline',
         meta: {
-          zhName: '订单统计',
-          key: '4-1',
+          zhName: '仓库管理',
+          key: '5-1-2',
           role: 2
         },
-        component: orderCollect
+        component: store
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '运输单统计',
+        key: '5',
+        role: 3
+      },
+      component: layout,
+      children: [{
+        path: '/manage/transport',
+        name: 'home',
+        icon: 'el-icon-tickets',
+        meta: {
+          zhName: '运输单统计',
+          key: '5-1',
+          role: 3
+        },
+        component: transportCollect
+      }]
+    },
+    {
+      path: '/manage',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '车辆管理',
+        key: '5-1-3',
+        role: 3
+      },
+      component: layout,
+      children: [{
+        path: '/car',
+        name: 'store',
+        icon: 'el-icon-bell',
+        meta: {
+          zhName: '车辆管理',
+          key: '5-1-4',
+          role: 3
+        },
+        component: car
+      }]
+    },
+    {
+      path: '/transport',
+      name: 'layout',
+      isNest: false,
+      meta: {
+        zhName: '运输单申请',
+        key: '7',
+        role: 3
+      },
+      component: layout,
+      children: [{
+        path: '/transport/apply',
+        name: 'transport',
+        icon: 'el-icon-edit-outline',
+        meta: {
+          zhName: '运输单申请',
+          key: '7-1',
+          role: 3
+        },
+        component: transport
       }]
     },
     {
@@ -107,68 +301,6 @@ const router = new Router({
           role: 4
         },
         component: transportCollect
-      }]
-    },
-    {
-      path: '/admin',
-      name: 'layout',
-      isNest: true,
-      meta: {
-        zhName: '管理员管理',
-        key: '6',
-        role: 2
-      },
-      component: layout,
-      children: [{
-        path: '/order',
-        name: 'order',
-        icon: 'el-icon-view',
-        meta: {
-          zhName: '订单管理',
-          key: '6-1',
-          role: 2
-        },
-        component: order
-      },{
-        path: '/transport',
-        name: 'transport',
-        icon: 'el-icon-view',
-        meta: {
-          zhName: '运输任务管理',
-          key: '2-2',
-          role: 2
-        },
-        component: transport
-      },{
-        path: '/store',
-        name: 'store',
-        icon: 'el-icon-view',
-        meta: {
-          zhName: '仓库管理',
-          key: '6-2',
-          role: 2
-        },
-        component: store
-      },{
-        path: '/team',
-        name: 'team',
-        icon: 'el-icon-view',
-        meta: {
-          zhName: '人员管理',
-          key: '6-3',
-          role: 2
-        },
-        component: team
-      },{
-        path: '/car',
-        name: 'car',
-        icon: 'el-icon-view',
-        meta: {
-          zhName: '车辆管理',
-          key: '6-4',
-          role: 2
-        },
-        component: car
       }]
     },
     {

@@ -4,11 +4,11 @@ const {query} = require('../utils/db');
 let getCarListPagination = function (role, content, pageIndex, pageNum) {
     let sql;
     if(content){
-        sql = `SELECT * FROM car_list WHERE operator_role = ${role} and is_show = 1 AND CONCAT(car_code, car_name, car_person) like "%${content}%" ORDER BY car_time DESC LIMIT ${pageIndex},${pageNum}`
-        return query(sql, [role, content, pageIndex, pageNum ])
+        sql = `SELECT * FROM car_list WHERE is_show = 1 AND CONCAT(car_code, car_name, car_person) like "%${content}%" ORDER BY car_time DESC LIMIT ${pageIndex},${pageNum}`
+        return query(sql, [content, pageIndex, pageNum ])
     }else{
-        sql = "SELECT * FROM car_list WHERE operator_role = ? and is_show = ? ORDER BY car_time DESC LIMIT ?,?"
-        return query(sql, [role, 1, pageIndex, pageNum ])
+        sql = "SELECT * FROM car_list WHERE is_show = ? ORDER BY car_time DESC LIMIT ?,?"
+        return query(sql, [1, pageIndex, pageNum ])
     }
 }
 
@@ -23,11 +23,11 @@ let getCarListMap = function (role) {
 /*获取车辆列表 - 总数 */
 let getCarListTotal = function (role, content) {
     if(content) {
-        let sql = `SELECT * from car_list where operator_role = ${role} and is_show = 1 and CONCAT(car_code, car_name, car_person) like "%${content}%"`
-        return query(sql, [role, content])
+        let sql = `SELECT * from car_list where is_show = 1 and CONCAT(car_code, car_name, car_person) like "%${content}%"`
+        return query(sql, [content])
     }else{
-        let sql = "SELECT * from car_list where operator_role = ? and is_show = ?"
-        return query(sql, [role, 1])
+        let sql = "SELECT * from car_list where is_show = ?"
+        return query(sql, [1])
     }
 }
 

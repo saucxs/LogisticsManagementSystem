@@ -10,7 +10,7 @@
       active-text-color="#ffd04b"
       :default-active="$route.path">
        <template v-for="item in menuList">
-         <el-submenu v-if="item.isNest && item.meta.role >= userInfo.role" :index="item.path">
+         <el-submenu v-if="item.isNest && item.meta.role == userInfo.role" :index="item.path">
            <template slot="title">
              <i :class="item.icon"></i>
              <span>{{item.meta.zhName}}</span>
@@ -24,7 +24,7 @@
            </template>
          </el-submenu>
 
-         <el-menu-item v-if="!item.isNest && item.meta.role >= userInfo.role" :key="item.children[0].path" :index="item.children[0].path">
+         <el-menu-item v-if="!item.isNest && item.meta.role == userInfo.role" :key="item.children[0].path" :index="item.children[0].path">
            <router-link :to="item.children[0].path">
              <i :class="item.children[0].icon"></i>{{item.children[0].meta.zhName}}
            </router-link>

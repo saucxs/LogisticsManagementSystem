@@ -4,11 +4,11 @@ const {query} = require('../utils/db');
 let getStoreListPagination= function (role, content, pageIndex, pageNum) {
     let sql;
     if(content){
-        sql = `SELECT * FROM store_list WHERE operator_role = ${role} and is_show = 1 AND CONCAT(store_code, store_name) like "%${content}%" ORDER BY store_time DESC LIMIT ${pageIndex},${pageNum}`
-        return query(sql, [role, content, pageIndex, pageNum ])
+        sql = `SELECT * FROM store_list WHERE is_show = 1 AND CONCAT(store_code, store_name) like "%${content}%" ORDER BY store_time DESC LIMIT ${pageIndex},${pageNum}`
+        return query(sql, [content, pageIndex, pageNum ])
     }else{
-        sql = "SELECT * FROM store_list WHERE operator_role = ? and is_show = ? ORDER BY store_time DESC LIMIT ?,?"
-        return query(sql, [role, 1, pageIndex, pageNum ])
+        sql = "SELECT * FROM store_list WHERE is_show = ? ORDER BY store_time DESC LIMIT ?,?"
+        return query(sql, [ 1, pageIndex, pageNum ])
     }
 }
 
@@ -16,11 +16,11 @@ let getStoreListPagination= function (role, content, pageIndex, pageNum) {
 /*获取仓库列表 - 总数 */
 let getStoreListTotal= function (role, content) {
     if(content) {
-        let sql = `SELECT * from store_list where operator_role = ${role} and is_show = 1 and CONCAT(store_code, store_name) like "%${content}%"`
-        return query(sql, [role, content])
+        let sql = `SELECT * from store_list where is_show = 1 and CONCAT(store_code, store_name) like "%${content}%"`
+        return query(sql, [content])
     }else{
-        let sql = "SELECT * from store_list where operator_role = ? and is_show = ?"
-        return query(sql, [role, 1])
+        let sql = "SELECT * from store_list where is_show = ?"
+        return query(sql, [1])
     }
 }
 

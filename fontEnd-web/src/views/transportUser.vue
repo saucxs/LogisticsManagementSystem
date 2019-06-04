@@ -9,6 +9,11 @@
           </el-input>
         </el-col>
       </el-col>
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+        <div class="button-style">
+          <el-button type="primary" @click="operatorOrder('add')">添加订单</el-button>
+        </div>
+      </el-col>
     </el-row>
     <p class="tip-p">提醒：可以根据运订单ID，模糊查询</p>
     <el-table
@@ -83,6 +88,41 @@
         :total="transportListTotal">
       </el-pagination>
     </div>
+    <!--dialog-->
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="confirmCreateVisiable"
+      :before-close="handleClose"
+      width="600px"
+      center>
+      <div>
+        <el-form label-position="right" label-width="90px" :model="formOrder">
+          <el-form-item label="订单名称">
+            <el-input v-model="formOrder.order_name" maxlength="16"></el-input>
+          </el-form-item>
+          <el-form-item label="订单货物">
+            <el-input type="textarea" :rows="2" v-model="formOrder.order_goods" maxlength="60"></el-input>
+          </el-form-item>
+          <!--<el-form-item label="收获人姓名">-->
+            <!--<el-input v-model="formOrder.order_receiver_name" maxlength="10"></el-input>-->
+          <!--</el-form-item>-->
+          <el-form-item label="收获人手机">
+            <el-input v-model="formOrder.order_receiver_phone" maxlength="11"></el-input>
+          </el-form-item>
+          <el-form-item label="收获人地址">
+            <el-input v-model="formOrder.order_receiver_address" maxlength="100"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="formOrder.remark" maxlength="30"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="handleClose()">取 消</el-button>
+          <el-button v-if="dialogTitle == '添加订单'" type="primary" :loading="loadingFlag" @click="successConfirm('add')">确 定</el-button>
+          <el-button v-if="dialogTitle == '修改订单'" type="primary" :loading="loadingFlag" @click="successConfirm('edit')">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -99,16 +139,15 @@
         currentPage: 1,
         searchContent: '',
         dialogTitle: '',
-        formTransport: {
-          transport_state: '',
-          transport_time:'',
-          order_id: '',
-          transport_path: '',
-          car_code: '',
-          car_driver: '',
-          car_escort: '',
-          operator_role: '',
+        formOrder: {
+          order_name: '',
+          order_goods: '',
+          order_time: '',
+          order_receiver_name: '',
+          order_receiver_phone: '',
+          order_receiver_address: '',
           operator_name: '',
+          operator_role: '',
           remark: '',
         },
         confirmCreateVisiable: false,
@@ -143,11 +182,7 @@
     methods: {
       ...mapActions([
         "getPersonalTransportList",
-        "addTransport",
-        "deleteTransport",
-        "getOrderListMap",
-        "getCarListMap",
-        "getTeamListMap"
+        "addOrder"
       ]),
       handleCurrentChange(currentPage) {
         this.personalTransportList(currentPage,10)
@@ -216,18 +251,14 @@
         })
       },
       operatorOrder(type, item){
-        this.getOrderListSelect();
-        this.getCarListSelect();
-        this.getTeamListSelect();
         if(type == 'add'){
-          this.dialogTitle = '添加运输单';
+          this.dialogTitle = '添加订单';
           this.confirmCreateVisiable = true;
+
         }else if(type == 'edit'){
-          this.dialogTitle = '修改运输单';
+          this.dialogTitle = '修改订单';
           this.confirmCreateVisiable = true;
-          this.disableNum = Number(item.transport_state);
-          item.transport_state = item.transport_state + '';
-          this.formTransport = item;
+          this.formOrder = item;
         }
       },
       deleteOrderItem(item){
@@ -244,15 +275,15 @@
         })
       },
       successConfirm(type){
-        if(!this.formTransport.order_id || !this.formTransport.transport_path || !this.formTransport.car_code || !this.formTransport.car_driver || !this.formTransport.car_escort || !this.formTransport.remark){
+        this.formOrder.order_receiver_name = this.userInfo.name;
+        if(!this.formOrder.order_name || !this.formOrder.order_goods || !this.formOrder.order_receiver_name || !this.formOrder.order_receiver_phone || !this.formOrder.order_receiver_address || !this.formOrder.remark){
           this.$message.warning('请输入相应内容')
         }else{
-          this.formTransport.type = type;
-          // this.formTransport.transport_state;
-          this.formTransport.transport_time = (new Date()).getTime();
-          this.formTransport.operator_name = this.userInfo.name;
-          this.formTransport.operator_role = this.userInfo.role;
-          this.addTransport(this.formTransport).then(res => {
+          this.formOrder.type = type;
+          this.formOrder.order_time = (new Date()).getTime();
+          this.formOrder.operator_name = this.userInfo.name;
+          this.formOrder.operator_role = this.userInfo.role;
+          this.addOrder(this.formOrder).then(res => {
             if(res.success){
               this.$message.success(res.message);
               this.handleClose();

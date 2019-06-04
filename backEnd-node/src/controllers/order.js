@@ -83,6 +83,7 @@ let addOrder = async (ctx, next) => {
                 if(res.length == 0){
                     params.transport_id = randomString(2) + "_" + params.order_time;
                     params.transport_path = '';
+                    params.store_code = '';
                     params.car_code = '';
                     params.car_driver = '';
                     params.car_escort = '';
@@ -94,6 +95,7 @@ let addOrder = async (ctx, next) => {
                         toNomalTime(params.order_time + 60*1000).substring(0,10),
                         params.order_id,
                         params.transport_path,
+                        params.store_code,
                         params.car_code,
                         params.car_driver,
                         params.car_escort,
@@ -102,6 +104,7 @@ let addOrder = async (ctx, next) => {
                         params.remark,
                         1
                     ])
+
                     /*修改订单状态到 生成运输单 */
                     orderModel.updateOrderState([6, params.order_id])
                 }

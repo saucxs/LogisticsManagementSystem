@@ -82,8 +82,8 @@
         label="操作"
         width="150">
         <template slot-scope="scope">
-          <el-button @click="operatorOrder('edit',scope.row)" type="success" size="small">修改</el-button>
-          <el-button :disabled="userInfo.role !== 1" @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
+          <el-button :disabled="scope.row.transport_state >= 2" @click="operatorOrder('edit',scope.row)" type="success" size="small">修改</el-button>
+          <el-button :disabled="userInfo.role !== 1 || scope.row.transport_state >= 2" @click="deleteOrderItem(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
