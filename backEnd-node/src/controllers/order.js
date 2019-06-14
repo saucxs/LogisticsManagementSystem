@@ -11,11 +11,12 @@ let getOrderList = async (ctx, next) => {
     let page =  Number(ctx.query.currentPage || 1),
         pageNum = Number(ctx.query.pageSize || 10),
 		role = ctx.query.operator_role,
-		content = ctx.query.searchContent;
+		content = ctx.query.searchContent,
+        orderType = ctx.query.orderType;
     let pageIndex = (page - 1) * pageNum;
-	const RowDataPacket = await orderModel.getOrderListPagination(role,content,pageIndex,pageNum),
+	const RowDataPacket = await orderModel.getOrderListPagination(role,content,pageIndex,pageNum,orderType),
 		orderList = JSON.parse(JSON.stringify(RowDataPacket));
-	const RowDataPacketTotal = await orderModel.getOrderListTotal(role,content),
+	const RowDataPacketTotal = await orderModel.getOrderListTotal(role,content,orderType),
         total = JSON.parse(JSON.stringify(RowDataPacketTotal)).length;
 	ctx.body = {
 		success: true,

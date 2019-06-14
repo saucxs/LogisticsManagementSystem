@@ -1,14 +1,26 @@
 const {query} = require('../utils/db');
 
 /*获取订单列表 - 分页 */
-let getOrderListPagination = function (role, content, pageIndex, pageNum) {
+let getOrderListPagination = function (role, content, pageIndex, pageNum, orderType) {
     let sql;
     if(content){
-        sql = `SELECT * FROM order_list WHERE operator_role >= ${role} and is_show = 1 AND CONCAT(order_id, order_name, order_receiver_name, order_receiver_phone) like "%${content}%" ORDER BY order_time DESC LIMIT ${pageIndex},${pageNum}`
-        return query(sql, [role, content, pageIndex, pageNum ])
+        console.log(orderType, '------------------------------------')
+        if(orderType == "ascending"){
+            sql = `SELECT * FROM order_list WHERE operator_role >= ${role} and is_show = 1 AND CONCAT(order_id, order_name, order_receiver_name, order_receiver_phone) like "%${content}%" ORDER BY order_time ASC LIMIT ${pageIndex},${pageNum}`
+            return query(sql, [role, content, pageIndex, pageNum, orderType ])
+        }else{
+            sql = `SELECT * FROM order_list WHERE operator_role >= ${role} and is_show = 1 AND CONCAT(order_id, order_name, order_receiver_name, order_receiver_phone) like "%${content}%" ORDER BY order_time DESC LIMIT ${pageIndex},${pageNum}`
+            return query(sql, [role, content, pageIndex, pageNum, orderType ])
+        }
+
     }else{
-        sql = "SELECT * FROM order_list WHERE operator_role >= ? and is_show = ? ORDER BY order_time DESC LIMIT ?,?"
-        return query(sql, [role, 1, pageIndex, pageNum ])
+        if(orderType == "ascending"){
+            sql = "SELECT * FROM order_list WHERE operator_role >= ? and is_show = ? ORDER BY order_time ASC LIMIT ?,?"
+            return query(sql, [role, 1, pageIndex, pageNum ])
+        }else{
+            sql = "SELECT * FROM order_list WHERE operator_role >= ? and is_show = ? ORDER BY order_time DESC LIMIT ?,?"
+            return query(sql, [role, 1, pageIndex, pageNum ])
+        }
     }
 }
 
@@ -22,7 +34,7 @@ let getOrderListMap = function (role) {
 
 
 /*获取订单列表 - 总数 */
-let getOrderListTotal = function (role, content) {
+let getOrderListTotal = function (role, content, orderType) {
     if(content) {
         let sql = `SELECT * from order_list where operator_role >= ${role} and is_show = 1 and CONCAT(order_id, order_name, order_receiver_name, order_receiver_phone) like "%${content}%"`
         return query(sql, [role, content])

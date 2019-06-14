@@ -19,6 +19,7 @@
     <el-table
       :data="orderTableData"
       border
+      @sort-change="sortChange"
       style="width: 100%">
       <el-table-column
         prop="order_id"
@@ -33,6 +34,7 @@
       <el-table-column
         prop="order_time"
         label="订单时间"
+        sortable
         width="100">
       </el-table-column>
       <el-table-column
@@ -169,6 +171,10 @@
         "addOrder",
         "deleteOrder"
       ]),
+      sortChange(column, prop, order){
+        console.log(column, prop, order, '-=-=-=-=-=-');
+        this.orderList(1,10, order);
+      },
       handleCurrentChange(currentPage) {
         this.orderList(currentPage,10)
       },
@@ -183,12 +189,13 @@
         this.formOrder = {};
         this.orderList(1,10);
       },
-      orderList(currentPage, pageSize){
+      orderList(currentPage, pageSize, orderType){
         let params = {
           operator_role: this.userInfo.role,
           searchContent: this.searchContent,
           currentPage: currentPage,
-          pageSize: pageSize
+          pageSize: pageSize,
+          orderType: orderType
         }
         this.getOrderList(params).then(res => {
           if(res.success){
